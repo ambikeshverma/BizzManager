@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bizz Manager</title>
+    <link rel="stylesheet" href="/style/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="headingbox">
+            <h1>BIZZ-MANAGER</h1>
+            <h2>Let's manage your Business</h2>
+            <div class="buttons">
+                       <a href="/registration" class="button">
+                         Get Start
+                        </a>
+                       <a href="/login" class="button">
+                        Login
+                       </a>
+            </div>
+        </div>
+        <div class="boxes">
+                <div class="imagebox" >
+                    <a href="/registration" >
+                        <div class="image" style="background-image: url(/images/inventory\ index.png); background-size: 40%;"></div>
+                    <div class="Headding-content">
+                        <h2>Inventory Control</h2>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, debitis, placeat tempora a atque reiciendis iure inventore reprehenderit perspiciatis perferendis quia molestias, amet doloribus consequuntur </p>
+                    </div>
+                    </a>
+                    
+                </div>
+
+                <div class="imagebox" style="background-color: rgb(171, 102, 52);">
+                    <a href="/registration" >
+                        <div class="image" style="background-image: url(/images/expense\ index.png);background-size: 45%;"></div>
+                    <div class="Headding-content">
+                        <h2>Expenses Control</h2>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, debitis, placeat tempora a atque reiciendis iure inventore reprehenderit perspiciatis perferendis quia molestias, amet doloribus consequuntur </p>
+                    </div>
+                    </a>
+                    
+                </div>
+
+                <div class="imagebox" style="background-color: rgb(41, 155, 113);">
+                    <a href="/registration" >
+                        <div class="image" style="background-image: url(/images/labour\ index.png); background-size: 50%;"></div>
+                    <div class="Headding-content">
+                        <h2>Worker Management</h2>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, debitis, placeat tempora a atque reiciendis iure inventore reprehenderit perspiciatis perferendis quia molestias, amet doloribus consequuntur </p>
+                    </div>
+                    </a>
+                    
+                </div>
+
+                <div class="imagebox" style="background-color: rgb(53, 148, 185);">
+                    <a href="/registration" >
+                        <div class="image" style="background-image: url(/images/support\ index.png);"></div>
+                    <div class="Headding-content">
+                        <h2>Team's Support</h2>
+                        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Vitae, debitis, placeat tempora a atque reiciendis iure inventore reprehenderit perspiciatis perferendis quia molestias, amet doloribus consequuntur </p>
+                    </div>
+                    </a>
+                    
+                </div>
+            
+        </div>
+    </div>
+    <script>
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+  navigator.serviceWorker.register('/sw.js').then(async function (register) {
+    console.log('✅ Service Worker registered.');
+
+    if (Notification.permission === "granted") {
+      // Already allowed
+      subscribeUser(register);
+    } else if (Notification.permission === "default") {
+      // Ask user
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        subscribeUser(register);
+      } else {
+        console.log("❌ Notification permission denied.");
+      }
+    } else {
+      console.log("🚫 Permission previously denied.");
+    }
+
+    async function subscribeUser(register) {
+      const subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array("BBULwummH3X4WEhdMrEOoV4sxo0ew75IDNO4MYX2UOSDjqr6pToLNoZ-avme5F0Aq6lhrNnSzEqeZE5pTotc8bA")
+      });
+
+      console.log("📦 Subscription object:", subscription);
+
+      await fetch("/subscribe", {
+        method: "POST",
+        body: JSON.stringify(subscription),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      console.log("✅ Subscription sent to backend");
+    }
+
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
+  });
+}
+</script>
+
+
+</body>
+</html>

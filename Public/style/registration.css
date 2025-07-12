@@ -1,0 +1,96 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body,html{
+	font-family: "DM Sans", sans-serif;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(221, 238, 252);
+}
+
+
+.container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.form{
+   width: 90%;
+   max-width: 425px;
+   box-shadow: 0px 0px 30px 1px;
+   background-color: white;
+   padding: 3%;
+}
+
+.input{
+    font: inherit;
+    width: 100%;
+    height: 40px;
+    padding-left: 7px;
+	background-color: transparent;
+    border-color: transparent;
+    border-radius: 10px;
+    border:1px solid rgb(80, 80, 80);
+    margin-bottom: 18px;
+    margin-top: 5px;
+   
+}
+
+input:focus {
+  border: 2px solid rgb(0, 191, 64);
+  outline: none; 
+}
+
+
+
+.lable{
+     font: inherit;
+    color: rgb(0, 162, 255);
+}
+
+h1{
+    font: inherit;
+    font-size: 40px;
+    font-weight: 500;
+    color: rgb(0, 162, 255);
+    margin-bottom: 30px;
+}
+
+
+
+.bt{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.button1:hover{
+    background-color: #2d1e9c;
+}
+
+
+.button1{
+    font: inherit;
+    font-weight: 500;
+    font-size: 15px;
+    padding: 15px;
+    width: 30%;
+    background-color: rgb(0, 162, 255);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.error-box{
+    color: red;
+}

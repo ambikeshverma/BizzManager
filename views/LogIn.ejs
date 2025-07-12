@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogIn</title>
+    <link rel="stylesheet" href="/style/registration.css">
+</head>
+<body class="main">
+    <div class="container">
+        
+
+        <form class="form" action="/login" method="post">
+        
+            <center> <h1>LogIn to Dashborad</h1></center>
+            <label class="lable" for="email">Email</label>
+            <input type="email" class="input"  name="username" id="email" placeholder="Enter your email">
+            <label class="lable" for="password">Password</label>
+            <input type="password" class="input" name="password" id="password" placeholder="Enter your password">
+            <% if (error) { %>
+                <div class="error-box"><%=error%></div>
+            <% } %>
+            <div class="bt">
+            <button type="submit" class="button1" id="Enter">LogIn</button>
+            </div>
+            <a href="/registration">Not have account!</a>
+        </form>
+    </div>
+</body>
+</html>

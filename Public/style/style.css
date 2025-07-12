@@ -1,0 +1,264 @@
+
+*{
+    margin: 0;
+    padding: 0;
+     font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+body,html{
+    width: 100%;
+    min-height: 100%;
+    background-color: rgb(221, 238, 252);
+}
+
+nav{
+    height: 55px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: white;
+    box-shadow: 1px 0.5px 2px black;
+}
+
+.logo{
+    margin-left: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.logo span{
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.heading{
+    font-size: 18px;
+    
+}
+
+.bell{
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.bell span{
+  color: black;
+  font-size: 18px;
+ }
+ 
+main{
+    display: flex;
+
+}
+
+.sidebar{
+    padding-top: 30px;
+    width: 15%;
+    height: 88vh;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin-top: 2px;
+    background-color: white;
+    box-shadow: 0px 0.05px 2px black;
+}
+
+a{
+    font-size: medium;
+    text-decoration: none;
+    color: rgb(17, 17, 17);
+}
+
+.sidebar-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 3px;
+    padding-left: 20px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+    margin-top: 4px;
+
+}
+
+.sidebar-item:hover{
+    background-color: rgb(212, 233, 250);
+    transition: all 0.7s ease;
+}
+
+.sidebar-item2{
+    margin-top: 40px;
+}
+
+.account{
+    margin-left: 20px;
+    margin-bottom: 10px;
+}
+
+.container{
+    width: 85%;
+    padding-top: 18px;
+    padding-left: 30px;
+    
+}
+
+.h1{
+    font-size: 40px;
+    font-weight: 600;
+}
+
+.overview{
+    font-size: larger;
+}
+
+.cards{
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 20px;
+    width: 100%;
+    
+}
+
+.card{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    /* gap: 80px; */
+    width: 230px;
+    height: 200px;
+   background-color: white;
+   border-radius: 10px;
+   border: 1px solid rgb(119, 119, 119);
+}
+
+.image-box{
+    display: flex;
+    gap:20px ;
+}
+
+.card span .card-heading{
+    font-size: larger;
+    color: rgb(30, 30, 30);
+}
+
+.update{
+    color:rgb(30, 30, 30); ;
+}
+
+.stockOutput{
+    font-size: 40px;
+}
+
+
+
+  nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Hamburger */
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding-left: 15px;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    left: -100%;
+    top: 55px; /* below navbar */
+    width: 200px;
+    height: 100vh;
+    background-color: white;
+    transition: left 0.3s ease-in-out;
+    z-index: 999;
+  }
+
+  .bell{
+    display: none;
+  }
+
+  .sidebar.show {
+    left: 0;
+  }
+
+  .hamburger {
+    display: block;
+  }
+
+  .heading {
+    flex: 1;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+  }
+.heading1{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+   
+}
+
+.forMobile{
+    display: block;
+    justify-content: center;
+    align-items: center;
+}
+
+  .heading1 .forMobile .h1{
+    font-size: 25px;
+  }
+
+  .overview{
+    font-size: 15px;
+    margin-bottom: 28px;
+    margin-top: 3px;
+    margin-left: 13px;
+  }
+
+
+  .cards{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .logo span{
+    font-size: large;
+    margin-left: 15px;
+  }
+.heading{
+    margin-left: 60px;
+}
+  .logo {
+    margin-left: auto;
+    margin-right: 15px;
+  }
+
+  .logo img{
+    display: none;
+  }
+
+  main {
+    flex-direction: column;
+  }
+
+  .container {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+}
