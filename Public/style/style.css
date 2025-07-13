@@ -202,7 +202,9 @@ a{
     text-align: center;
     font-size: 18px;
     font-weight: bold;
+     margin-left: 60px;
   }
+  
 .heading1{
     width: 100%;
     display: flex;
@@ -213,9 +215,11 @@ a{
 }
 
 .forMobile{
-    display: block;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+    
 }
 
   .heading1 .forMobile .h1{
@@ -224,9 +228,7 @@ a{
 
   .overview{
     font-size: 15px;
-    margin-bottom: 28px;
     margin-top: 3px;
-    margin-left: 13px;
   }
 
 
@@ -234,15 +236,14 @@ a{
     display: flex;
     flex-direction: column;
     align-items: center;
+    
   }
 
   .logo span{
     font-size: large;
     margin-left: 15px;
   }
-.heading{
-    margin-left: 60px;
-}
+
   .logo {
     margin-left: auto;
     margin-right: 15px;
@@ -253,12 +254,16 @@ a{
   }
 
   main {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+   
   }
 
   .container {
     padding-left: 10px;
     padding-right: 10px;
+   
   }
 
 }

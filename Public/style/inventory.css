@@ -364,6 +364,7 @@ nav {
     z-index: 999;
   }
 
+
   .bell{
     display: none;
   }
@@ -380,21 +381,18 @@ nav {
     flex: 1;
     text-align: center;
     font-size: 18px;
+    margin-left: 60px;
     font-weight: bold;
   }
 .heading1{
     width: 100%;
     display: flex;
     flex-direction: column;
-}
-
-.forMobile{
-    display: block;
-    justify-content: center;
     align-items: center;
 }
 
-  .heading1 .forMobile .h1{
+
+  .heading1 .h1{
     font-size: 25px;
     text-align: center;
   }
@@ -405,16 +403,11 @@ nav {
     margin-top: 3px;
   }
 
-.add-product{
-   margin-left: 20px;
-}
   .logo span{
     font-size: large;
     margin-left: 15px;
   }
-.heading{
-    margin-left: 60px;
-}
+
   .logo {
     margin-left: auto;
     margin-right: 15px;
@@ -424,19 +417,28 @@ nav {
     display: none;
   }
 
+ .add-product{
+  margin-right: 0px;
+  margin-left: 0px;
+ }
+
   main {
+    display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .container {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 90%;
+    padding-left: 0px;
+    padding-right: 0px;
+    
   }
 
   
 
   .modal{
-    width: 90%;
+    width: 94%;
     margin-top: 40px;
   }
 }

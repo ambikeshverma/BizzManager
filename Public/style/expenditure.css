@@ -363,13 +363,8 @@ a{
    
 }
 
-.forMobile{
-    display: block;
-    justify-content: center;
-    align-items: center;
-}
 
-  .heading1 .forMobile .h1{
+  .heading1 .h1{
     font-size: 25px;
   }
 
@@ -377,11 +372,11 @@ a{
     font-size: 15px;
     margin-bottom: 28px;
     margin-top: 3px;
-    margin-left: 13px;
   }
 
 .add-product{
-   margin-left: 35px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .showExpenses{
@@ -407,12 +402,15 @@ a{
   }
 
   main {
+    display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .container {
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 94%;
+    padding-left: 0px;
+    padding-right: 0px;
   }
 
   
