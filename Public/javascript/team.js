@@ -1,9 +1,10 @@
+
 const addProduct = document.getElementById('addProduct');
 const openButton = document.getElementById('openModal');
 const openUseStock = document.getElementById('openUseStock');
 const modalOverlay = document.getElementById('modalOverlay');
 const modalOverlay1 = document.getElementById('modalOverlay1');
-const modalOverlay2 = document.getElementById('modalOverlay2');
+const addPayment = document.getElementById('bt2');
 const form = document.getElementById('myForm');
 const addProductForm = document.getElementById('addProductForm');
 const useStockForm = document.getElementById('useStockForm');
@@ -12,7 +13,7 @@ const cancelButtonProduct = document.getElementById('cancelButton-product');
 const useStockcancelButton = document.getElementById('useStockcancelButton');
 const productName = document.getElementById("productName");
 const currentStockDisplay = document.getElementById("currentStockDisplay");
-const productIdInput = document.getElementById("productId");
+const teamNameInput = document.getElementById("teamName");
 const addQuantityInput = document.getElementById("addQuantity");
 const currentStockDisplayUseStock = document.getElementById("currentStockDisplayUseStock");
 const productIdInputuseStock = document.getElementById("productIdUseStock");
@@ -43,42 +44,28 @@ addProductForm.addEventListener('submit', () => {
   modalOverlay1.style.display = 'none'; // Hide the modal
 });
 
-// //Show the modal of add-stock (delegation)
 
- const tableBody = document.querySelector('.table-content tbody');
+ //Show the modal of add-stock (delegation)
 
-tableBody.addEventListener('click', (e) => {
-   const addbutton = e.target.closest('.add-stock');
-   const usebutton = e.target.closest('.use-stock');
-  if (usebutton) {
-  const id = usebutton.dataset.id;
-  const name = usebutton.dataset.name;
-  const stock = parseInt(usebutton.dataset.stock);
+ const showExpenses = document.querySelector('.showExpenses');
 
-  productNameUseStock.innerText = name;
-  currentStockDisplayUseStock.innerText = stock;
-  productIdInputuseStock.value = id;
-  useQuantityInput.value = "";
+showExpenses.addEventListener('click', (e) => {
+   const addteambutton = e.target.closest('.bt2');
+    if (!addteambutton) return
+ // console.log(addteambutton.dataset.teamName)
+   const teamName = addteambutton.dataset.teamName;
+//   const name = addbutton.dataset.name;
+//   const stock = parseInt(addbutton.dataset.stock);
 
-  modalOverlay2.style.display = 'flex'; 
-  return;
-}
+//   productName.innerText = name;
+  // currentStockDisplay.innerText = teamName;
+   teamNameInput.value = teamName;
+//   addQuantityInput.value = "";
 
-   if (addbutton){ 
+ modalOverlay.style.display = 'flex'; 
 
-  const id = addbutton.dataset.id;
-  const name = addbutton.dataset.name;
-  const stock = parseInt(addbutton.dataset.stock);
-
-  productName.innerText = name;
-  currentStockDisplay.innerText = stock;
-  productIdInput.value = id;
-  addQuantityInput.value = "";
-
-  modalOverlay.style.display = 'flex'; 
-  
-}
 });
+
 
 
 form.addEventListener('submit', (e) => {
@@ -119,66 +106,8 @@ modalOverlay.addEventListener('click', (e) => {
 // });
 
 
-useStockForm.addEventListener('submit', (e) => {
- 
-  alert('Form submitted!');
-  modalOverlay2.style.display = 'none'; 
-});
 
 
-useStockcancelButton.addEventListener('click', () => {
-  modalOverlay2.style.display = 'none';
-});
-
-modalOverlay2.addEventListener('click', (e) => {
-  if (e.target === modalOverlay2) {
-    modalOverlay2.style.display = 'none';
-  }
-});
-
-
-// Handle add row
-// addProductForm.addEventListener('submit', () => {
-//   // e.preventDefault();
-
-//   const product = document.getElementById('productInput').value;
-//   const category = document.getElementById('categoryInput').value;
-//   const currentStock = document.getElementById('stockInput').value;
-//   const minMaxStock = document.getElementById('minMaxInput').value;
-//   const supplier = document.getElementById('supplierInput').value;
-
-//   const newRow = document.createElement('tr');
-
-//   const today = new Date().toISOString().split('T')[0];
-
-//   newRow.innerHTML = `
-//     <td>${tableBody.children.length + 1}.</td>
-//     <td>${product}</td>
-//     <td>${category}</td>
-//     <td>${currentStock}</td>
-//     <td>${minMaxStock}</td>
-//     <td> 
-//      <button class="add-stock">
-//         <img src="/public/images/add-stock.png" height="20px" alt="" />
-//         <span>Add Stock</span>
-//       </button>
-//     </td>
-//     <td>${today}</td>
-//     <td>${supplier}</td>
-//     <td >
-//        <button class="delete-row">
-//           <img src="/public/images/delete.png" alt="">
-//        </button>
-//     </td>
-   
-      
-    
-//   `;
-
-//   tableBody.appendChild(newRow);
-
-  //addProductForm.reset();
-//});
 
 
 

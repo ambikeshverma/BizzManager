@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Payment History</title>
+    <link rel="stylesheet" href="/style/payment.hist.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="hamburger" id="hamburger">&#9776;</div>
+      <div class="logo">
+        <img src="/images/logo.jpg" height="50px" alt="" />
+        <span>BizManager</span>
+      </div>
+      <div class="heading">Payment History</div>
+      <div class="bell">
+        <img src="/images/Notification.png" alt="" />
+        <span><%=user.name%></span>
+        <span>(<%=user.role%>)</span>
+      </div>
+    </nav>
+    <main>
+      <div class="sidebar">
+        <div>
+          <a href="/dashboard" class="sidebar-item">
+            <img src="/images/Dasboard.png" height="30px" alt="" />
+            <span>Dashboard</span>
+          </a>
+        </div>
+        <div>
+          <a href="/inventory" class="sidebar-item">
+            <img src="/images/Inventory.png" height="30px" alt="" />
+            <span>Inventory</span>
+          </a>
+        </div>
+        <div>
+          <a href="/expenditure" class="sidebar-item">
+            <img src="/images/Expen.png" height="30px" alt="" />
+            <span>Expenditure</span>
+          </a>
+        </div>
+        <div>
+          <a href="" class="sidebar-item">
+            <img src="/images/Instal.png" height="30px" alt="" />
+            <span>Installation</span>
+          </a>
+        </div>
+        <div>
+          <a href="" class="sidebar-item">
+            <img src="/images/Labour.png" height="30px" alt="" />
+            <span>Labour & Wages</span>
+          </a>
+        </div>
+        <div class="sidebar-item2">
+          <div class="account">ACCOUNT</div>
+          <div>
+            <a href="" class="sidebar-item">
+              <img src="/images/settings.png" height="30px" alt="" />
+              <span>Settings</span>
+            </a>
+          </div>
+          <div>
+            <a href="/logout" class="sidebar-item">
+              <img src="/images/logout.png" height="30px" alt="" />
+              <span>Sign out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div style="height: 675px; margin: 25px 0; overflow: hidden">
+          <form class="filterform" method="GET" action="/payment-history/<%= teamName %>">
+            <label>Start Date:</label>
+            <input
+              class="dateF"
+              type="date"
+              name="start"
+              value="<%= startDate %>"
+            />
+            <label>End Date:</label>
+            <input
+              class="dateF"
+              type="date"
+              name="end"
+              value="<%= endDate %>"
+            />
+            <button class="filterbt" type="submit">Filter</button>
+          </form>
+
+          <div class="table-container">
+            <table class="table-content">
+              <thead>
+                <tr>
+                  <th>SR No.</th>
+                  <th>TEAM</th>
+                  <th>DATE</th>
+                  <th>REFERENCE</th>
+                  <th>AMOUNT</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% payments.forEach((payment,index) =>{%>
+
+                <tr>
+                  <td><%=index+1%>.</td>
+                  <td><%=payment.teamName%></td>
+                  <td><%=payment.lastUpdate%></td>
+                  <td><%=payment.reference%></td>
+                  <td><%=payment.amount%></td>
+                </tr>
+
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+
+          <div style="margin-top: 20px;">
+  <% if (currentPage > 1) { %>
+    <a href="/payment-history/<%= teamName %>?page=<%= currentPage - 1 %>&start=<%= startDate %>&end=<%= endDate %>">⬅️ Previous</a>
+  <% } %>
+
+  <span style="margin: 0 10px;">Page <%= currentPage %> of <%= totalPages %></span>
+
+  <% if (currentPage < totalPages) { %>
+    <a href="/payment-history/<%= teamName %>?page=<%= currentPage + 1 %>&start=<%= startDate %>&end=<%= endDate %>">Next ➡️</a>
+  <% } %>
+</div>
+
+
+
+
+
+        </div>
+      </div>
+    </main>
+    <script src="/javascript/inventory.js"></script>
+  </body>
+</html>

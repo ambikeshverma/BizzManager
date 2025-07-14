@@ -10,6 +10,9 @@ const RegisteredUser = require('./model/user');
 const { authenticate, authorizeAdmin } = require("./middleware/auth");
 const expenModel= require("./model/expenditure");
 const Subscription = require('./model/Subscription');
+const teamModel =require("./model/team")
+const paymentModel =require("./model/payment")
+
 
 const webpush = require('web-push');
 
@@ -169,7 +172,32 @@ const payload = JSON.stringify({
   
 app.get("/expenditure",authenticate, async (req, res) => {
   try {
-    const createdexpenses = await expenModel.find().sort({ lastUpdate: -1 });
+   // const createdexpenses = await expenModel.find().sort({ lastUpdate: -1 });
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = {};
+
+  // Only apply date filter if user submitted it
+  if (startDate && endDate) {
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
+  }
+
+
+    const total = await expenModel.countDocuments(query);
+    const createdexpenses = await expenModel.find(query)
+      .sort({ lastUpdate: -1 }) // show most recent first
+      .skip(skip)
+      .limit(limit);
+
+
+
+
 
     const now = new Date();
     const IST_OFFSET = 5.5 * 60 * 60000;
@@ -210,7 +238,11 @@ app.get("/expenditure",authenticate, async (req, res) => {
       user:req.user,
       todayTotal: todaySum[0]?.total || 0,
       weekTotal: weekSum[0]?.total || 0,
-      yearTotal: yearSum[0]?.total || 0
+      yearTotal: yearSum[0]?.total || 0,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
     });
   } catch (error) {
     console.error("Error loading expenditures:", error);
@@ -224,7 +256,7 @@ app.get("/expenditure",authenticate, async (req, res) => {
 
     await expenModel.create({
     amount,
-    lastUpdate:new Date,
+    lastUpdate,
     description,
     ResPerson,
     category,
@@ -245,6 +277,86 @@ app.get("/expenditure",authenticate, async (req, res) => {
     res.status(500).send("Error deleting product");
   }
 });
+
+
+app.get("/labour",authenticate,async function(req,res){
+    const createdTeam = await teamModel.find();
+    res.render("teams",{teams:createdTeam,user:req.user});
+});
+
+
+
+
+app.post("/add-team",authenticate, async function(req,res){
+    let {teamName,totalInstallation,amount}=req.body;
+
+    await teamModel.create({
+   teamName,
+   totalInstallation,
+   amount,
+   })
+   
+    res.redirect("/labour");
+
+ });
+
+ app.post("/add-payment",authenticate, async function(req,res){
+    let {teamName,addPayment,reference}=req.body;
+
+    let pt=await paymentModel.create({
+      teamName,
+      reference,
+      amount:addPayment
+   })
+    res.redirect("/labour");
+
+ });
+
+
+ app.get("/payment-history/:teamName",authenticate,async function(req,res){
+  //const teamName=req.params.teamName;
+    //const teamPaymentHistory=await paymentModel.find({teamName:teamName})
+
+     const teamName = req.params.teamName;
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = { teamName };
+
+  if (startDate && endDate) {
+    query.createdAt = { $gte: startDate, $lte: endDate };
+  }
+
+  try {
+    const total = await paymentModel.countDocuments(query);
+
+    const teamPaymentHistory = await paymentModel.find(query)
+      .sort({ createdAt: -1 }) // newest first
+      .skip(skip)
+      .limit(limit);
+
+    res.render("payment", {
+      payments: teamPaymentHistory,
+      user: req.user,
+      teamName,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching payment history");
+  }
+    
+    
+    // res.render("payment",{payments:teamPaymentHistory,user:req.user});
+});
+
 
 
 app.get("/login",(req,res)=>{

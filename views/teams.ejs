@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Teams & Workers</title>
+    <link rel="stylesheet" href="/style/teams.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <nav>
+      <div class="hamburger" id="hamburger">&#9776;</div>
+      <div class="logo">
+        <img src="/images/logo.jpg" height="50px" alt="" />
+        <span>BizManager</span>
+      </div>
+      <div class="heading">Teams & Workers</div>
+      <div class="bell">
+        <img src="/images/Notification.png" alt="" />
+        <span><%=user.name%></span>
+        <span>(<%=user.role%>)</span>
+      </div>
+    </nav>
+    <main>
+      <div class="sidebar">
+        <div>
+          <a href="/dashboard" class="sidebar-item">
+            <img src="/images/Dasboard.png" height="30px" alt="" />
+            <span>Dashboard</span>
+          </a>
+        </div>
+        <div>
+          <a href="/inventory" class="sidebar-item">
+            <img src="/images/Inventory.png" height="30px" alt="" />
+            <span>Inventory</span>
+          </a>
+        </div>
+        <div>
+          <a href="/expenditure" class="sidebar-item">
+            <img src="/images/Expen.png" height="30px" alt="" />
+            <span>Expenditure</span>
+          </a>
+        </div>
+        <div>
+          <a href="" class="sidebar-item">
+            <img src="/images/Instal.png" height="30px" alt="" />
+            <span>Installation</span>
+          </a>
+        </div>
+        <div>
+          <a href="" class="sidebar-item">
+            <img src="/images/Labour.png" height="30px" alt="" />
+            <span>Labour & Wages</span>
+          </a>
+        </div>
+        <div class="sidebar-item2" >
+          <div class="account">ACCOUNT</div>
+          <div>
+            <a href="" class="sidebar-item">
+              <img src="/images/settings.png" height="30px" alt="" />
+              <span>Settings</span>
+            </a>
+          </div>
+          <div>
+            <a href="/logout" class="sidebar-item">
+              <img src="/images/logout.png" height="30px" alt="" />
+              <span>Sign out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="heading1">
+            <div class="mb">
+                <div class="h1">Active Teams</div>
+                <div class="overview">Curently you have these active teams</div>
+            </div>
+          
+            <div class="buttonMobile">
+               <button class="add-product" id="addProduct">
+                 <span>+</span>
+                 <span>Add Teams</span>
+               </button>
+          </div>
+        </div>
+
+       <!-- modalOverlay1 -->
+
+        <div class="modal-overlay" id="modalOverlay1">
+          <div class="modal">
+            <div class="form-heading">
+              <img src="/images/receipt.png" height="30px" alt="" />
+              <h2>Add Team</h2>
+            </div>
+
+            <form action="/add-team" method="post" id="addProductForm">
+              <label for="">Team Name*</label>
+              <input
+                name="teamName"
+                type="text"
+                class="input"
+                placeholder="Enter team name"
+                required
+              />
+              
+              <label for="">Total Installation*</label>
+              <input
+                name="totalInstallation"
+                type="number"
+                class="input"
+                required
+              />
+              <label for="">Total Paid</label>
+              <input
+                type="number"
+                name="amount"
+                class="input"
+              />
+              <div class="form-buttons">
+                <button
+                  type="button"
+                  class="form-cancel-button"
+                  id="cancelButton-product"
+                >
+                  Cancel
+                </button>
+                <button type="submit" id="sub" class="form-submit-button">
+                  Add Team
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="showExpenses">
+
+           <% teams.forEach((team,index) =>{%>
+          <div class="imageBox">
+            <a href="">
+              <div class="image" id="image"></div>
+              <h2><%=team.teamName%></h2>
+              <div class="detail">
+                <span class="installation">
+                  <div class="boxheading">Total Installation</div>
+                  <div class="today"><%=team.totalInstallation%></div>
+                </span>
+                <span class="installation">
+                  <div class="boxheading">Paid</div>
+                  <div class="today"><%=team.amount%></div>
+                  <p>+5000</p>
+                </span>
+              </div>
+            </a>
+            <div class="cardsbuttons">
+                <button class="bt1">Add Inst.</button>
+                <button id="bt2" class="bt2"  data-team-name="<%=team.teamName%>">Add Payment</button>
+              </div>
+              <div>
+                <a class="paymentHist" href="/payment-history/<%=team.teamName%>">Payment History</a>
+              </div>
+          </div>
+           <% }) %>
+
+          
+        </div>
+
+
+        <!-- add payment modeloverlay -->
+
+        <div class="modal-overlay" id="modalOverlay">
+          <div class="modal">
+            <div class="form-heading">
+              <img src="/images/add-stock.png" height="30px" alt="" />
+              <h2>Add Payment</h2>
+            </div>
+            <div class="current-stock">
+              <div><span>Current Stock</span> <span id="currentStockDisplay"></span></div>
+              <div id="productName"></div>
+            </div>
+
+            <form action="/add-payment" method="post" id="myForm">
+              
+              <input
+                name="teamName"
+                id="teamName"
+                type="hidden"
+                class="input"
+              />
+
+              <label for="">Amount*</label>
+              <input
+                name="addPayment"
+                id="addPayment"
+                type="number"
+                class="input"
+                placeholder="Enter amount"
+                required
+              />
+
+              <label for="">Reference</label>
+              <input
+                name="reference"
+                id="reference"
+                type="text"
+                class="input"
+                placeholder="Enter amount"
+              />
+              
+              <div class="form-buttons">
+                <button
+                  type="button"
+                  class="form-cancel-button"
+                  id="cancelButton"
+                >
+                  Cancel
+                </button>
+                <button type="submit" id="sub" class="form-submit-button">
+                  Add Stock
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+            
+
+
+      </div>
+    </main>
+    <script src="/javascript/team.js"></script>
+  </body>
+</html>

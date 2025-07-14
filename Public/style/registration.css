@@ -94,3 +94,16 @@ h1{
 .error-box{
     color: red;
 }
+
+
+@media screen and (max-width: 768px) {
+    .form{
+        width: 100%;
+        height: 100%;
+        padding-left: 30px;
+        padding-right: 30px;
+        display: flex;
+        flex-direction: column;
+        padding-top: 115px;
+    }
+}

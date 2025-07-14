@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Expenditure</title>
-    <link rel="stylesheet" href="/style/expenditure.css">
+    <link rel="stylesheet" href="/style/expenditure.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap"
       rel="stylesheet"
     />
-</head>
-<body>
+  </head>
+  <body>
     <nav>
       <div class="hamburger" id="hamburger">&#9776;</div>
       <div class="logo">
@@ -27,7 +27,7 @@
       </div>
     </nav>
     <main>
-        <div class="sidebar">
+      <div class="sidebar">
         <div>
           <a href="/dashboard" class="sidebar-item">
             <img src="/images/Dasboard.png" height="30px" alt="" />
@@ -53,7 +53,7 @@
           </a>
         </div>
         <div>
-          <a href="" class="sidebar-item">
+          <a href="/labour" class="sidebar-item">
             <img src="/images/Labour.png" height="30px" alt="" />
             <span>Labour & Wages</span>
           </a>
@@ -76,9 +76,9 @@
       </div>
       <div class="container">
         <div class="heading1">
-            <div class="h1">Expenditure Management</div>
-            <div class="overview">
-              Track and manage business expenses
+          <div class="formobile">
+          <div class="h1">Expenditure Management</div>
+          <div class="overview">Track and manage business expenses</div>
           </div>
           <div class="buttonMobile">
             <button class="add-product" id="addProduct">
@@ -105,7 +105,12 @@
                 required
               />
               <label for="">Date*</label>
-              <input type="datetime-local" name="lastUpdate" class="input" id="date">
+              <input
+                type="datetime-local"
+                name="lastUpdate"
+                class="input"
+                id="date"
+              />
               <label for="">Category*</label>
               <select name="category" class="input" id="categoryInput" required>
                 <option value="">-- category --</option>
@@ -114,9 +119,20 @@
                 <option value="Desiel">Desiel</option>
               </select>
               <label for="">Resposible Person*</label>
-              <input name="ResPerson" type="text" class="input" id="personName" required>
+              <input
+                name="ResPerson"
+                type="text"
+                class="input"
+                id="personName"
+                required
+              />
               <label for="">Description</label>
-              <input type="text" name="description" id="description" class="input" >
+              <input
+                type="text"
+                name="description"
+                id="description"
+                class="input"
+              />
               <div class="form-buttons">
                 <button
                   type="button"
@@ -134,82 +150,118 @@
         </div>
 
         <div class="showExpenses">
-            <div class="imageBox">
-                <span>
-                    <img src="/images/calender1.png" alt="">
-                </span>
-                <span>
-                    <div class="boxheading">Today's Expenses</div>
-                    <div class="today"><%=todayTotal%></div>
-                </span>
-            </div>
-            <div class="imageBox">
-                <span>
-                    <img src="/images/calendar2.png" alt="">
-                </span>
-                <span>
-                    <div class="boxheading">Weekly Expenses</div>
-                    <div class="today"><%=weekTotal%></div>
-                </span>
-            </div>
-            <div class="imageBox">
-                <span>
-                    <img src="/images/calendar3.png" alt="">
-                </span>
-                <span>
-                    <div class="boxheading">Yearly Expenses</div>
-                    <div class="today"><%=yearTotal%></div>
-                </span>
-            </div>
+          <div class="imageBox">
+            <span>
+              <img src="/images/calender1.png" alt="" />
+            </span>
+            <span>
+              <div class="boxheading">Today's Expenses</div>
+              <div class="today"><%=todayTotal%></div>
+            </span>
+          </div>
+          <div class="imageBox">
+            <span>
+              <img src="/images/calendar2.png" alt="" />
+            </span>
+            <span>
+              <div class="boxheading">Weekly Expenses</div>
+              <div class="today"><%=weekTotal%></div>
+            </span>
+          </div>
+          <div class="imageBox">
+            <span>
+              <img src="/images/calendar3.png" alt="" />
+            </span>
+            <span>
+              <div class="boxheading">Yearly Expenses</div>
+              <div class="today"><%=yearTotal%></div>
+            </span>
+          </div>
         </div>
 
-        <div style="height: 640px; margin: 25px 0; overflow: hidden; ">
+        <div style="height: 675px; margin-top: 40px; overflow: hidden">
+          <form class="filterform" method="GET" action="/expenditure">
+            <label>Start Date:</label>
+            <input class="dateF" type="date" name="start" value="<%= startDate %>" />
+            <label>End Date:</label>
+            <input class="dateF" type="date" name="end" value="<%= endDate %>" />
+            <button class="filterbt" type="submit">Filter</button>
+          </form>
 
-           <div class="table-container">
+          <div class="table-container">
             <table class="table-content">
               <thead>
-               <tr>
-              <th>SR No.</th>
-              <th>DATE</th>
-              <th>DESCRIPTION</th>
-              <th>AMOUNT</th>
-              <th>RESPONSIBLE PERSON</th>
-              <th>CATEGORY</th>
-              <th>ACTION</th>
-            </tr>
-          </thead>
-          <tbody>
+                <tr>
+                  <th>SR No.</th>
+                  <th>DATE</th>
+                  <th>DESCRIPTION</th>
+                  <th>AMOUNT</th>
+                  <th>RESPONSIBLE PERSON</th>
+                  <th>CATEGORY</th>
+                  <th>ACTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% expenses.forEach((expense,index) =>{%>
+                <tr>
+                  <td><%=index+1%>.</td>
+                  <td><%=expense.lastUpdate%></td>
+                  <td><%=expense.description%></td>
+                  <td><%=expense.amount%></td>
+                  <td><%=expense.ResPerson%></td>
+                  <td><%=expense.category%></td>
+                  <td>
+                    <form
+                      action="/deleteExpense/<%=expense._id%>"
+                      method="post"
+                      onsubmit="return confirm('Are you sure! You want to delete <%=expense.amount%>?');"
+                    >
+                      <button type="submit" class="delete-row">
+                        <img src="/images/delete.png" alt="Delete" />
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
 
-             <% expenses.forEach((expense,index) =>{%>
-            <tr>
-              <td><%=index+1%>.</td>
-              <td><%=expense.lastUpdate%></td>
-              <td><%=expense.description%></td>
-              <td><%=expense.amount%></td>
-              <td><%=expense.ResPerson%></td>
-              <td><%=expense.category%></td>
-              <td >
-                 <form action="/deleteExpense/<%=expense._id%>" method="post" onsubmit="return confirm('Are you sure! You want to delete <%=expense.amount%>?');">
-                  <button type="submit" class="delete-row">
-                  <img src="/images/delete.png" alt="Delete" />
-                </button>
-                </form>
-              </td>
-            </tr>
-             <% }) %>
+
+          <div style="margin-top: 20px">
+          <% if (currentPage > 1) { %>
+          <a
+            href="/expenditure?page=<%= currentPage - 1 %>&start=<%= startDate %>&end=<%= endDate %>"
+            >⬅️ Previous</a
+          >
+          <% } %>
+
+          <span style="margin: 0 10px"
+            >Page <%= currentPage %> of <%= totalPages %></span
+          >
+
+          <% if (currentPage < totalPages) { %>
+          <a
+            href="/expenditure?page=<%= currentPage + 1 %>&start=<%= startDate %>&end=<%= endDate %>"
+            >Next ➡️</a
+          >
+          <% } %>
 
 
-          </tbody>
-        </table>
         </div>
 
+
+
+
+        
+
+
+
+
+
         </div>
-
-       
-
-
       </div>
     </main>
     <script src="/javascript/expenditure.js"></script>
-</body>
+  </body>
 </html>

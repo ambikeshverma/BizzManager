@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const expensesSchema = mongoose.Schema({
     lastUpdate:{
         type:Date,
-        default: Date.now
+        // default: Date.now
     },
     description: String,
     amount:Number,
