@@ -411,6 +411,10 @@ a{
     align-items: center;
     gap: 20px;
 }
+
+.imageBox{
+  width: 90%;
+}
   .logo span{
     font-size: large;
     margin-left: 15px;
