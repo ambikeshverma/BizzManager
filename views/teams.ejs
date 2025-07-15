@@ -53,7 +53,7 @@
           </a>
         </div>
         <div>
-          <a href="" class="sidebar-item">
+          <a href="/labour" class="sidebar-item">
             <img src="/images/Labour.png" height="30px" alt="" />
             <span>Labour & Wages</span>
           </a>
@@ -141,6 +141,13 @@
 
            <% teams.forEach((team,index) =>{%>
           <div class="imageBox">
+
+            <form action="/deleteteam/<%=team._id%>" method="post" onsubmit="return confirm('Are you sure! You want to delete <%=team.teamName%>?');">
+                  <button type="submit" class="delete-team">
+                  Delete Team
+                  </button>
+            </form>
+
             <a href="">
               <div class="image" id="image"></div>
               <h2><%=team.teamName%></h2>

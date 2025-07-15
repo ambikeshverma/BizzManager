@@ -300,6 +300,33 @@ app.post("/add-team",authenticate, async function(req,res){
 
  });
 
+
+ app.post("/deleteteam/:teamid",authenticate,authorizeAdmin, async (req, res) => {
+  const teamId = req.params.teamid;
+
+  try {
+    const deletedteam=await teamModel.findByIdAndDelete(teamId);
+    res.redirect("/labour"); 
+    /////////////
+    const payload = JSON.stringify({
+    title: 'New team deleted',
+    body: `Team was deleted.`
+  });
+  const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+////////////
+
+  } catch (err) {
+    res.status(500).send("Error deleting product");
+  }
+});
+
+
+
+
+
  app.post("/add-payment",authenticate, async function(req,res){
     let {teamName,addPayment,reference}=req.body;
 
