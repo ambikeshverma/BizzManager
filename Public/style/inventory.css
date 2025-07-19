@@ -89,6 +89,22 @@ a{
 
 }
 
+.sidebar-item.active {
+  color: #fff;
+  background-color: rgba(185, 3, 3, 0.755);
+  pointer-events: none;
+}
+
+.sidebar-item.active:hover{
+  color: #fff;
+  background-color: rgba(185, 3, 3, 0.755);
+}
+
+.sidebar-item.active:hover{
+  color: #fff;
+  background-color: rgba(185, 3, 3, 0.755);
+}
+
 .sidebar-item:hover{
     background-color: rgb(212, 233, 250);
     transition: all 0.7s ease;
@@ -235,6 +251,12 @@ a{
     border: 1px solid rgb(62, 62, 62);
     border-radius: 5px;
     cursor: pointer;
+}
+
+.historyPages{
+  color: blue;
+  font-style: italic;
+  text-decoration: underline;
 }
 
 .delete-row{

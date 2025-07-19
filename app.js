@@ -4,6 +4,8 @@ const connectDB = require("./config/db");
 const app = express();
 const cookieParser = require("cookie-parser");
 const productModel= require("./model/stock");
+const stockHistoryModel= require("./model/stock-history");
+const addStockHistoryModel = require("./model/addStockHistory");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const RegisteredUser = require('./model/user');
@@ -12,6 +14,7 @@ const expenModel= require("./model/expenditure");
 const Subscription = require('./model/Subscription');
 const teamModel =require("./model/team")
 const paymentModel =require("./model/payment")
+const installationModel =require("./model/installation-hist");
 
 
 const webpush = require('web-push');
@@ -58,13 +61,13 @@ app.get("/inventory",authenticate,async function(req,res){
 });
 
 app.post("/create",authenticate, async function(req,res){
-    let {pname,catagory,CurrentStock,limit,Sname}=req.body;
+    let {pname,catagory,CurrentStock,Sname,dateIn}=req.body;
 
         await productModel.create({
         product:pname,
+        lastUpdate:dateIn,
         catagory: catagory,
         curentStock: CurrentStock,
-        minMaxStock: limit,
         supplier:Sname
     })
 ///////////////
@@ -80,6 +83,10 @@ app.post("/create",authenticate, async function(req,res){
     res.redirect("/inventory")
 
  });
+
+
+
+
 
 
 
@@ -109,7 +116,19 @@ app.post("/delete/:id",authenticate,authorizeAdmin, async (req, res) => {
 
 app.post("/add-stock/update",authenticate, async (req, res) => {
   try {
-         const {productId,addQuantity}=req.body;
+         const {productId,addQuantity,addProductName,addDate,note}=req.body;
+         
+         
+           let vt=await addStockHistoryModel.create({
+    productName:addProductName,
+    productId,
+    lastUpdate:addDate,
+    numberOfStock:addQuantity,
+    reference: note,
+   })
+
+           
+
          const product = await productModel.findById(productId);
      if (!product) return res.status(404).send("Product not found");
 
@@ -121,7 +140,6 @@ app.post("/add-stock/update",authenticate, async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: "Update failed" });
   }
-   
   ///////
   const payload = JSON.stringify({
     title: `New stock added of ${pn}`,
@@ -137,11 +155,71 @@ app.post("/add-stock/update",authenticate, async (req, res) => {
 
 });
 
+//  app.get("/addstock-history/:productId",authenticate,async function(req,res){
+//   let st = await addStockHistoryModel.find()
+//   res.send(st);
+//  })
+
+
+ app.get("/addstock-history/:productId",authenticate,async function(req,res){
+
+     const productId1 = req.params.productId;
+     
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = { productId:productId1 };
+
+  if (startDate && endDate) {
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
+  }
+
+  try {
+    const total = await addStockHistoryModel.countDocuments(query);
+
+    const addStockHistory = await addStockHistoryModel.find(query)
+      .sort({ lastUpdate: -1 }) // newest first
+      .skip(skip)
+      .limit(limit);
+
+    res.render("addstockHistory", {
+      addstocks: addStockHistory,
+      user: req.user,
+      productId1,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching payment history");
+  }
+    
+});
+
+
 
 
 app.post("/use-stock/update",authenticate, async (req, res) => {
    try {
-          const {productIdUseStock,useQuantity}=req.body;
+          const {productIdUseStock,useQuantity,productName,date,note}=req.body;
+
+           let lt=await stockHistoryModel.create({
+    productName,
+    productId:productIdUseStock,
+    lastUpdate:date,
+    numberOfStock:useQuantity,
+    reference: note,
+   })
+
+
+
+
           const product = await productModel.findById(productIdUseStock);
       if (!product) return res.status(404).send("Product not found");
 
@@ -152,6 +230,8 @@ app.post("/use-stock/update",authenticate, async (req, res) => {
    } catch (err) {
      res.status(500).json({ error: "Update failed" });
    }
+
+
 /////////
 const payload = JSON.stringify({
     title: `New stock used of `,
@@ -166,6 +246,52 @@ const payload = JSON.stringify({
   res.redirect("/inventory");
 
 });
+
+
+
+
+
+ app.get("/stock-history/:productId",authenticate,async function(req,res){
+
+     const productId = req.params.productId;
+     
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = { productId };
+
+  if (startDate && endDate) {
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
+  }
+
+  try {
+    const total = await stockHistoryModel.countDocuments(query);
+
+    const teamStockHistory = await stockHistoryModel.find(query)
+      .sort({ lastUpdate: -1 }) // newest first
+      .skip(skip)
+      .limit(limit);
+
+    res.render("stockHistory", {
+      stocks: teamStockHistory,
+      user: req.user,
+      productId,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching payment history");
+  }
+    
+});
+
 
 
 
@@ -288,12 +414,13 @@ app.get("/labour",authenticate,async function(req,res){
 
 
 app.post("/add-team",authenticate, async function(req,res){
-    let {teamName,totalInstallation,amount}=req.body;
+    let {teamName,totalInstallation,amount,balance}=req.body;
 
     await teamModel.create({
    teamName,
    totalInstallation,
    amount,
+   balance
    })
    
     res.redirect("/labour");
@@ -328,21 +455,24 @@ app.post("/add-team",authenticate, async function(req,res){
 
 
  app.post("/add-payment",authenticate, async function(req,res){
-    let {teamName,addPayment,reference}=req.body;
+    let {teamName,addPayment,reference,teamIdPay,dateP}=req.body;
 
     let pt=await paymentModel.create({
       teamName,
+      lastUpdate:dateP,
       reference,
       amount:addPayment
    })
+
+   const result = await teamModel.findById(teamIdPay);
+   result.balance = parseInt(result.balance) - parseInt(addPayment);
+   await result.save();
     res.redirect("/labour");
 
  });
 
 
  app.get("/payment-history/:teamName",authenticate,async function(req,res){
-  //const teamName=req.params.teamName;
-    //const teamPaymentHistory=await paymentModel.find({teamName:teamName})
 
      const teamName = req.params.teamName;
   const page = parseInt(req.query.page) || 1;
@@ -355,14 +485,14 @@ app.post("/add-team",authenticate, async function(req,res){
   const query = { teamName };
 
   if (startDate && endDate) {
-    query.createdAt = { $gte: startDate, $lte: endDate };
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
   }
 
   try {
     const total = await paymentModel.countDocuments(query);
 
     const teamPaymentHistory = await paymentModel.find(query)
-      .sort({ createdAt: -1 }) // newest first
+      .sort({ lastUpdate: -1 }) // newest first
       .skip(skip)
       .limit(limit);
 
@@ -380,8 +510,71 @@ app.post("/add-team",authenticate, async function(req,res){
     res.status(500).send("Error fetching payment history");
   }
     
+});
+
+
+app.post("/add-installation",authenticate, async function(req,res){
+    let {teamName,installationNum,rate,brand,address,reference,teamId,dateI}=req.body;
+
+    let ct=await installationModel.create({
+      teamName,
+   brand,
+   address,
+   reference,
+   lastUpdate:dateI
+   })
+
+
+   const findTeam= await teamModel.findById(teamId)
+    findTeam.totalInstallation = parseInt(findTeam.totalInstallation) + parseInt(installationNum);
+    findTeam.amount = parseInt(findTeam.amount) + (parseInt(installationNum)*parseInt(rate));
+    findTeam.balance = parseInt(findTeam.balance) + (parseInt(installationNum)*parseInt(rate));
+      await findTeam.save();
+   
+    res.redirect("/labour");
     
-    // res.render("payment",{payments:teamPaymentHistory,user:req.user});
+ });
+
+
+
+ app.get("/installation-history/:teamName",authenticate,async function(req,res){
+
+     const teamName = req.params.teamName;
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = { teamName };
+
+  if (startDate && endDate) {
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
+  }
+
+  try {
+    const total = await installationModel.countDocuments(query);
+
+    const teamInstallationHistory = await installationModel.find(query)
+      .sort({ lastUpdate: -1 }) // newest first
+      .skip(skip)
+      .limit(limit);
+
+    res.render("installation", {
+      installations: teamInstallationHistory,
+      user: req.user,
+      teamName,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error fetching payment history");
+  }
+    
 });
 
 

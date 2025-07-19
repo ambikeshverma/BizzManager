@@ -58,7 +58,7 @@
             <span>Labour & Wages</span>
           </a>
         </div>
-        <div class="sidebar-item2" >
+        <div class="sidebar-item2">
           <div class="account">ACCOUNT</div>
           <div>
             <a href="" class="sidebar-item">
@@ -76,20 +76,20 @@
       </div>
       <div class="container">
         <div class="heading1">
-            <div class="mb">
-                <div class="h1">Active Teams</div>
-                <div class="overview">Curently you have these active teams</div>
-            </div>
-          
-            <div class="buttonMobile">
-               <button class="add-product" id="addProduct">
-                 <span>+</span>
-                 <span>Add Teams</span>
-               </button>
+          <div class="mb">
+            <div class="h1">Active Teams</div>
+            <div class="overview">Curently you have these active teams</div>
+          </div>
+
+          <div class="buttonMobile">
+            <button class="add-product" id="addProduct">
+              <span>+</span>
+              <span>Add Teams</span>
+            </button>
           </div>
         </div>
 
-       <!-- modalOverlay1 -->
+        <!-- modalOverlay1 -->
 
         <div class="modal-overlay" id="modalOverlay1">
           <div class="modal">
@@ -107,7 +107,7 @@
                 placeholder="Enter team name"
                 required
               />
-              
+
               <label for="">Total Installation*</label>
               <input
                 name="totalInstallation"
@@ -116,11 +116,11 @@
                 required
               />
               <label for="">Total Paid</label>
-              <input
-                type="number"
-                name="amount"
-                class="input"
-              />
+              <input type="number" name="amount" class="input" />
+
+              <label for="">Balance</label>
+              <input type="number" name="balance" class="input" />
+
               <div class="form-buttons">
                 <button
                   type="button"
@@ -138,14 +138,14 @@
         </div>
 
         <div class="showExpenses">
-
-           <% teams.forEach((team,index) =>{%>
+          <% teams.forEach((team,index) =>{%>
           <div class="imageBox">
-
-            <form action="/deleteteam/<%=team._id%>" method="post" onsubmit="return confirm('Are you sure! You want to delete <%=team.teamName%>?');">
-                  <button type="submit" class="delete-team">
-                  Delete Team
-                  </button>
+            <form
+              action="/deleteteam/<%=team._id%>"
+              method="post"
+              onsubmit="return confirm('Are you sure! You want to delete <%=team.teamName%>?');"
+            >
+              <button type="submit" class="delete-team">Delete Team</button>
             </form>
 
             <a href="">
@@ -159,23 +159,43 @@
                 <span class="installation">
                   <div class="boxheading">Paid</div>
                   <div class="today"><%=team.amount%></div>
-                  <p>+5000</p>
+                  <p>+<%=team.balance%></p>
                 </span>
               </div>
             </a>
             <div class="cardsbuttons">
-                <button class="bt1">Add Inst.</button>
-                <button id="bt2" class="bt2"  data-team-name="<%=team.teamName%>">Add Payment</button>
-              </div>
-              <div>
-                <a class="paymentHist" href="/payment-history/<%=team.teamName%>">Payment History</a>
-              </div>
+              <button
+                class="bt1"
+                id="bt1"
+                data-id="<%=team._id%>"
+                data-team-name="<%=team.teamName%>"
+              >
+                Add Inst.
+              </button>
+              <button
+                class="bt2"
+                id="bt2"
+                data-id="<%=team._id%>"
+                data-team-name="<%=team.teamName%>"
+              >
+                Add Payment
+              </button>
+            </div>
+            <div class="history"> 
+              
+                <span class="paymentHist">
+                  <a  href="/installation-history/<%=team.teamName%>">
+                  Installation History</a>
+                </span>
+                <span class="paymentHist">
+                  <a  href="/payment-history/<%=team.teamName%>">
+                  Payment History</a>
+                </span>
+              
+            </div>
           </div>
-           <% }) %>
-
-          
+          <% }) %>
         </div>
-
 
         <!-- add payment modeloverlay -->
 
@@ -186,15 +206,23 @@
               <h2>Add Payment</h2>
             </div>
             <div class="current-stock">
-              <div><span>Current Stock</span> <span id="currentStockDisplay"></span></div>
+              <div>
+                
+              </div>
               <div id="productName"></div>
             </div>
 
             <form action="/add-payment" method="post" id="myForm">
-              
               <input
                 name="teamName"
                 id="teamName"
+                type="hidden"
+                class="input"
+              />
+
+              <input
+                name="teamIdPay"
+                id="teamIdPay"
                 type="hidden"
                 class="input"
               />
@@ -209,20 +237,126 @@
                 required
               />
 
+               <label for="">Date*</label>
+              <input
+                name="dateP"
+                id="dateP"
+                type="date"
+                class="input"
+                placeholder="Enter date"
+                required
+              />
+
               <label for="">Reference</label>
               <input
                 name="reference"
                 id="reference"
                 type="text"
                 class="input"
-                placeholder="Enter amount"
+                placeholder="Type any message..."
               />
-              
+
               <div class="form-buttons">
                 <button
                   type="button"
                   class="form-cancel-button"
                   id="cancelButton"
+                >
+                  Cancel
+                </button>
+                <button type="submit" id="sub" class="form-submit-button">
+                  Add Payment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Model for add installtion -->
+        <div class="modal-overlay" id="modalOverlay2">
+          <div class="modal">
+            <div class="form-heading">
+              <img src="/images/add-stock.png" height="30px" alt="" />
+              <h2>Add Installation</h2>
+            </div>
+            <div class="current-stock">
+                <div id="productName"></div>
+            </div>
+
+            <form
+              action="/add-installation"
+              method="post"
+              id="addinstallationform"
+            >
+              <input
+                name="teamName"
+                id="teamNameIn"
+                type="hidden"
+                class="input"
+              />
+              <input name="teamId" id="teamId" type="hidden" class="input" />
+
+              <label for="installationNum">No of installation*</label>
+              <input
+                name="installationNum"
+                id="installationNum"
+                type="number"
+                class="input"
+                placeholder="Enter no. of installation"
+                required
+              />
+
+              <label for="rate">Rate*</label>
+              <input
+                name="rate"
+                id="rate"
+                type="number"
+                class="input"
+                placeholder="Enter Rate"
+                required
+              />
+
+               <label for="rate">Date*</label>
+              <input
+                name="dateI"
+                id="dateI"
+                type="date"
+                class="input"
+                placeholder="Enter date"
+                required
+              />
+
+              <label for="brand" id="brand">Brand</label>
+              <select name="brand" id="brand" class="input">
+                <option value="">---brand---</option>
+                <option value="Tata">TATA</option>
+                <option value="Luminous">Luminous</option>
+                <option value="Adani">Adani</option>
+              </select>
+
+              <label for="address">Address</label>
+              <input
+                name="address"
+                id="address"
+                type="text"
+                class="input"
+                placeholder="Enter Address"
+              />
+
+              <label for="">Reference</label>
+              <input
+                name="reference"
+                id="reference"
+                type="text"
+                class="input"
+                placeholder="Type any message..."
+              />
+
+              <div class="form-buttons">
+                <button
+                  type="button"
+                  class="form-cancel-button"
+                  id="cancelButtonAddInstallation"
                 >
                   Cancel
                 </button>
@@ -233,9 +367,6 @@
             </form>
           </div>
         </div>
-            
-
-
       </div>
     </main>
     <script src="/javascript/team.js"></script>

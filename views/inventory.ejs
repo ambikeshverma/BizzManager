@@ -113,6 +113,17 @@
                 required
                 id="productInput"
               />
+
+              <input
+                name="dateIn"
+                id="dateIn"
+                type="date"
+                class="input"
+                placeholder="Enter Date"
+                required
+              />
+
+
               <label for="">Category*</label>
               <select name="catagory" class="input" id="categoryInput" required>
                 <option value="">-- category --</option>
@@ -128,14 +139,7 @@
                 id="stockInput"
                 required
               />
-              <label for="">Min/Max Stock</label>
-              <input
-                name="limit"
-                type="number"
-                class="input"
-                id="minMaxInput"
-                required
-              />
+              
               <label for="">Supplier</label>
               <input
                 name="Sname"
@@ -170,9 +174,10 @@
               <th>PRODUCT</th>
               <th>CATEGORY</th>
               <th>CURRENT STOCK</th>
-              <th>MIN/MAX STOCK</th>
               <th>ADD STOCK</th>
+              <th>ADDED HISTORY</th>
               <th>USE STOCK</th>
+              <th>USED HISTORY</th>
               <th>LAST UPDATED</th>
               <th>SUPPLIER</th>
               <th>ACTION</th>
@@ -186,7 +191,7 @@
               <td><%=product.product%></td>
               <td><%=product.catagory%></td>
               <td><%=product.curentStock%></td>
-              <td><%=product.minMaxStock%></td>
+              
               <td>
                 <button class="add-stock" id="openModal" data-id="<%=product._id%>" data-name="<%=product.product%>" data-stock="<%=product.curentStock%>">
                   <img
@@ -197,6 +202,7 @@
                   <span>Add Stock</span>
                 </button>
               </td>
+              <td><a class="historyPages" href="/addstock-history/<%=product._id%>">Added Stock History</a></td>
               <td>
                 <button class="use-stock" id="openUseStock" data-id="<%=product._id%>" data-name="<%=product.product%>" data-stock="<%=product.curentStock%>">
                   <img
@@ -207,7 +213,8 @@
                   <span>Use Stock</span>
                 </button>
               </td>
-              <td><%=product.lastUpdate%></td>
+              <td><a class="historyPages" href="/stock-history/<%=product._id%>">Used Stock History</a></td>
+              <td><%=new Date(product.lastUpdate).toLocaleString('en-IN',{timeZone:'Asia/Kolkata'})%></td>
               <td><%=product.supplier%></td>
               <td>
                 <form action="/delete/<%=product._id%>" method="post" onsubmit="return confirm('Are you sure! You want to delete <%=product.product%>?');">
@@ -251,6 +258,13 @@
                 class="input"
               />
 
+               <input
+                name="addProductName"
+                id="addProductNameInput"
+                type="hidden"
+                class="input"
+              />
+
               <label for="">Quantity to Add*</label>
               <input
                 name="addQuantity"
@@ -258,6 +272,16 @@
                 type="number"
                 class="input"
                 placeholder="Enter quantity"
+                required
+              />
+
+               <label for="addDate">Date*</label>
+              <input
+                name="addDate"
+                id="addDate"
+                type="date"
+                class="input"
+                placeholder="Enter date"
                 required
               />
               
@@ -269,9 +293,9 @@
                 <option value="">Increamental</option>
                 <option value="">Low rate</option>
               </select>
-              <label for="">Notes (optional)</label>
+              <label for="">Notes</label>
               <textarea
-                name=""
+                name="note"
                 class="input"
                 id="test"
                 placeholder="Additional notes about this addition"
@@ -314,6 +338,13 @@
                 class="input"
               />
 
+               <input
+                name="productName"
+                id="productNameInput"
+                type="hidden"
+                class="input"
+              />
+
               <label for="">Quantity to Use*</label>
               <input
                 name="useQuantity"
@@ -321,6 +352,16 @@
                 type="number"
                 class="input"
                 placeholder="Enter quantity"
+                required
+              />
+
+               <label for="date">Date*</label>
+              <input
+                name="date"
+                id="date"
+                type="date"
+                class="input"
+                placeholder="Enter date"
                 required
               />
               
@@ -334,7 +375,7 @@
               </select>
               <label for="">Notes (optional)</label>
               <textarea
-                name=""
+                name="note"
                 class="input"
                 id="test"
                 placeholder="Additional notes about this addition"

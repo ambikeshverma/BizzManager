@@ -94,6 +94,7 @@ a{
   background-color: rgba(185, 3, 3, 0.755);
   pointer-events: none;
 }
+
 .sidebar-item.active:hover{
   color: #fff;
   background-color: rgba(185, 3, 3, 0.755);

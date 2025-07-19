@@ -4,10 +4,9 @@ const stockSchema = mongoose.Schema({
     product: String,
     catagory: String,
     curentStock: Number,
-    minMaxStock: Number,
     lastUpdate:{
         type:Date,
-        default:Date.now
+        // default:Date.now
     },
     supplier:String
 });

@@ -11,6 +11,8 @@ const cancelButton = document.getElementById('cancelButton');
 const cancelButtonProduct = document.getElementById('cancelButton-product');
 const useStockcancelButton = document.getElementById('useStockcancelButton');
 const productName = document.getElementById("productName");
+const addProductNameInput = document.getElementById("addProductNameInput");
+const productNameInput = document.getElementById("productNameInput");
 const currentStockDisplay = document.getElementById("currentStockDisplay");
 const productIdInput = document.getElementById("productId");
 const addQuantityInput = document.getElementById("addQuantity");
@@ -52,10 +54,11 @@ tableBody.addEventListener('click', (e) => {
    const usebutton = e.target.closest('.use-stock');
   if (usebutton) {
   const id = usebutton.dataset.id;
-  const name = usebutton.dataset.name;
+  const name1 = usebutton.dataset.name;
   const stock = parseInt(usebutton.dataset.stock);
 
-  productNameUseStock.innerText = name;
+  productNameUseStock.innerText = name1;
+  productNameInput.value = name1;
   currentStockDisplayUseStock.innerText = stock;
   productIdInputuseStock.value = id;
   useQuantityInput.value = "";
@@ -71,6 +74,7 @@ tableBody.addEventListener('click', (e) => {
   const stock = parseInt(addbutton.dataset.stock);
 
   productName.innerText = name;
+  addProductNameInput.value = name;
   currentStockDisplay.innerText = stock;
   productIdInput.value = id;
   addQuantityInput.value = "";
@@ -121,7 +125,7 @@ modalOverlay.addEventListener('click', (e) => {
 
 useStockForm.addEventListener('submit', (e) => {
  
-  alert('Form submitted!');
+  alert('Stock Used Successfully');
   modalOverlay2.style.display = 'none'; 
 });
 
@@ -190,6 +194,26 @@ document.addEventListener("DOMContentLoaded", function () {
   hamburger.addEventListener("click", function () {
     sidebar.classList.toggle("show");
   });
+
+  const links = document.querySelectorAll(".sidebar-item");
+  const currentPath = window.location.pathname;
+
+  links.forEach(link => {
+    if (link.getAttribute("href") === currentPath) {
+      link.classList.add("active");
+    }
+  });
+
+   document.addEventListener("click", function (e) {
+    const isClickInsideSidebar = sidebar.contains(e.target);
+    const isClickOnHamburger = hamburger.contains(e.target);
+
+    if (!isClickInsideSidebar && !isClickOnHamburger) {
+      sidebar.classList.remove("show");
+    }
+  });
+
+
 });
 
 

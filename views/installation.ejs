@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Payment History</title>
-    <link rel="stylesheet" href="/style/payment.hist.css" />
+    <title>Installation History</title>
+    <link rel="stylesheet" href="/style/installation.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -19,7 +19,7 @@
         <img src="/images/logo.jpg" height="50px" alt="" />
         <span>BizManager</span>
       </div>
-      <div class="heading">Payment History</div>
+      <div class="heading">Installation History</div>
       <div class="bell">
         <img src="/images/Notification.png" alt="" />
         <span><%=user.name%></span>
@@ -76,7 +76,7 @@
       </div>
       <div class="container">
         <div style="height: 675px; margin: 25px 0; overflow: hidden">
-          <form class="filterform" method="GET" action="/payment-history/<%= teamName %>">
+          <form class="filterform" method="GET" action="/installation-history/<%= teamName %>">
             <label>Start Date:</label>
             <input
               class="dateF"
@@ -100,20 +100,22 @@
                 <tr>
                   <th>SR No.</th>
                   <th>TEAM</th>
-                  <th>DATE</th>
+                  <th>BRAND</th>
+                  <th>Address</th>
                   <th>REFERENCE</th>
-                  <th>AMOUNT</th>
+                  <th>DATE</th>
                 </tr>
               </thead>
               <tbody>
-                <% payments.forEach((payment,index) =>{%>
+                <% installations.forEach((installation,index) =>{%>
 
                 <tr>
                   <td><%=index+1%>.</td>
-                  <td><%=payment.teamName%></td>
-                  <td><%=payment.lastUpdate%></td>
-                  <td><%=payment.reference%></td>
-                  <td><%=payment.amount%></td>
+                  <td><%=installation.teamName%></td>
+                  <td><%=installation.brand%></td>
+                  <td><%=installation.address%></td>
+                  <td><%=installation.reference%></td>
+                  <td><%=installation.lastUpdate%></td>
                 </tr>
 
                 <% }) %>
@@ -141,6 +143,6 @@
         </div>
       </div>
     </main>
-    <script src="/javascript/payment.js"></script>
+    <script src="/javascript/installation.js"></script>
   </body>
 </html>

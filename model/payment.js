@@ -6,7 +6,7 @@ const paymentSchema = mongoose.Schema({
     teamName:String,
     lastUpdate:{
         type:Date,
-        default: Date.now
+        // default: Date.now
     },
     reference: String,
     amount:Number,

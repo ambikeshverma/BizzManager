@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Payment History</title>
-    <link rel="stylesheet" href="/style/payment.hist.css" />
+    <link rel="stylesheet" href="/style/addstockHistory.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -76,7 +76,7 @@
       </div>
       <div class="container">
         <div style="height: 675px; margin: 25px 0; overflow: hidden">
-          <form class="filterform" method="GET" action="/payment-history/<%= teamName %>">
+          <form class="filterform" method="GET" action="/addstock-history/<%= productId1 %>">
             <label>Start Date:</label>
             <input
               class="dateF"
@@ -99,21 +99,21 @@
               <thead>
                 <tr>
                   <th>SR No.</th>
-                  <th>TEAM</th>
-                  <th>DATE</th>
+                  <th>PRODUCT NAME</th>
+                  <th>QUANTITY</th>
                   <th>REFERENCE</th>
-                  <th>AMOUNT</th>
+                  <th>DATE</th>
                 </tr>
               </thead>
               <tbody>
-                <% payments.forEach((payment,index) =>{%>
+                <% addstocks.forEach((stock1,index) =>{%>
 
                 <tr>
                   <td><%=index+1%>.</td>
-                  <td><%=payment.teamName%></td>
-                  <td><%=payment.lastUpdate%></td>
-                  <td><%=payment.reference%></td>
-                  <td><%=payment.amount%></td>
+                  <td><%=stock1.productName%></td>
+                  <td><%=stock1.numberOfStock%></td>
+                  <td><%=stock1.reference%></td>
+                  <td><%=stock1.lastUpdate%></td>
                 </tr>
 
                 <% }) %>
@@ -141,6 +141,6 @@
         </div>
       </div>
     </main>
-    <script src="/javascript/payment.js"></script>
+    <script src="/javascript/addStockHistory.js"></script>
   </body>
 </html>
