@@ -1,10 +1,10 @@
 {
   "name": "Buzzmanager",
-  "short_name": "Buzz",
+  "short_name": "Symtrack",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#2196f3",
+  "theme_color": "#ddeefc",
   "icons": [
     {
       "src": "/icon-192.png",
