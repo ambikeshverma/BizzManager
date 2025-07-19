@@ -73,7 +73,7 @@ app.post("/create",authenticate, async function(req,res){
 ///////////////
     const payload = JSON.stringify({
     title: 'New Product Added',
-    body: `Product "${pname}" was added, with stock of `
+    body: `Product "${pname}" was added, with stock of ${CurrentStock} supplied by ${Sname}`
   });
   const subscriptions = await Subscription.find();
   subscriptions.forEach(sub => {
@@ -96,16 +96,7 @@ app.post("/delete/:id",authenticate,authorizeAdmin, async (req, res) => {
   try {
     const deletedProduct=await productModel.findByIdAndDelete(productId);
     res.redirect("/inventory"); 
-    /////////////
-    const payload = JSON.stringify({
-    title: 'New Product deleted',
-    body: `Product was deleted.`
-  });
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
-  });
-////////////
+   
 
   } catch (err) {
     res.status(500).send("Error deleting product");
@@ -136,14 +127,17 @@ app.post("/add-stock/update",authenticate, async (req, res) => {
      await product.save();
     var aq=addQuantity;
     var pn=product.product;
+    var cs =product.curentStock
+    var addD=addDate
+    var nt=note
    
   } catch (err) {
     res.status(500).json({ error: "Update failed" });
   }
   ///////
   const payload = JSON.stringify({
-    title: `New stock added of ${pn}`,
-    body: `stocks of  are added, Now total stock is ${aq} `
+    title: `${aq} new stocks are added into ${pn}`,
+    body: `On ${addD} amount of ${aq} stocks are added to ${pn} now current stocks in ${pn} are ${cs} and other details: ${nt}`
   });
    
   const subscriptions = await Subscription.find();
@@ -155,10 +149,9 @@ app.post("/add-stock/update",authenticate, async (req, res) => {
 
 });
 
-//  app.get("/addstock-history/:productId",authenticate,async function(req,res){
-//   let st = await addStockHistoryModel.find()
-//   res.send(st);
-//  })
+
+
+
 
 
  app.get("/addstock-history/:productId",authenticate,async function(req,res){
@@ -226,6 +219,11 @@ app.post("/use-stock/update",authenticate, async (req, res) => {
       product.curentStock = parseInt(product.curentStock) - parseInt(useQuantity);
       await product.save();
 
+      var uq =useQuantity
+      var pn = productName
+      var dt = date
+      var nte = note
+
    
    } catch (err) {
      res.status(500).json({ error: "Update failed" });
@@ -234,8 +232,8 @@ app.post("/use-stock/update",authenticate, async (req, res) => {
 
 /////////
 const payload = JSON.stringify({
-    title: `New stock used of `,
-    body: ` stocks are used. `
+    title: `${uq} stocks are used from ${pn} `,
+    body: ` Amount of ${uq} are used on ${dt} from ${pn} additional notes are: ${nte} `
   });
   const subscriptions = await Subscription.find();
   subscriptions.forEach(sub => {
@@ -387,6 +385,17 @@ app.get("/expenditure",authenticate, async (req, res) => {
     ResPerson,
     category,
    })
+
+   ///////////////
+    const payload = JSON.stringify({
+    title: `New ₹${amount} Expense added `,
+    body: `Amount of ₹${amount} are spent for ${category} on ${lastUpdate} ,responsible person ${ResPerson}...other details: ${description} `
+  });
+  const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+  ///////////////
    
     res.redirect("/expenditure");
 
@@ -422,6 +431,17 @@ app.post("/add-team",authenticate, async function(req,res){
    amount,
    balance
    })
+
+    ///////////////
+    const payload = JSON.stringify({
+    title: `New team added ${teamName}`,
+    body: `${teamName} have ${totalInstallation} total installation and total amount of ₹${amount} already paid Symtrack`
+  });
+  const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+  ///////////////
    
     res.redirect("/labour");
 
@@ -467,6 +487,19 @@ app.post("/add-team",authenticate, async function(req,res){
    const result = await teamModel.findById(teamIdPay);
    result.balance = parseInt(result.balance) - parseInt(addPayment);
    await result.save();
+
+     ///////////////
+    const payload = JSON.stringify({
+    title: `₹${addPayment} paid to ${teamName}`,
+    body: `Amount of ₹${addPayment} are paid to ${teamName} on ${dateP} Reference: ${reference}`
+  });
+  const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+  ///////////////
+
+
     res.redirect("/labour");
 
  });
@@ -530,7 +563,20 @@ app.post("/add-installation",authenticate, async function(req,res){
     findTeam.amount = parseInt(findTeam.amount) + (parseInt(installationNum)*parseInt(rate));
     findTeam.balance = parseInt(findTeam.balance) + (parseInt(installationNum)*parseInt(rate));
       await findTeam.save();
+
+        ///////////////
+    const payload = JSON.stringify({
+    title: `${installationNum} new installation added to ${teamName}`,
+    body: `${brand} setup added by team ${teamName} at ${address} at ${dateI} on rate of ${rate} reference: ${reference}`
+  });
+  const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+  ///////////////
    
+
+
     res.redirect("/labour");
     
  });
