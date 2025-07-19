@@ -104,7 +104,7 @@
             </div>
 
             <form action="/create" method="post" id="addProductForm">
-              <label for="">Product Name*</label>
+              <label for="productInput">Product Name*</label>
               <input
                 name="pname"
                 type="text"
@@ -113,7 +113,7 @@
                 required
                 id="productInput"
               />
-
+            <label for="dateIn">Date*</label>
               <input
                 name="dateIn"
                 id="dateIn"
@@ -124,14 +124,14 @@
               />
 
 
-              <label for="">Category*</label>
+              <label for="categoryInput">Category*</label>
               <select name="catagory" class="input" id="categoryInput" required>
                 <option value="">-- category --</option>
                 <option value="Hardware">Hardware</option>
                 <option value="Something">Something</option>
                 <option value="Software">Software</option>
               </select>
-              <label for="">Current Stock</label>
+              <label for="stockInput">Current Stock</label>
               <input
                 name="CurrentStock"
                 type="number"
@@ -140,7 +140,7 @@
                 required
               />
               
-              <label for="">Supplier</label>
+              <label for="supplierInput">Supplier</label>
               <input
                 name="Sname"
                 type="text"
@@ -265,7 +265,7 @@
                 class="input"
               />
 
-              <label for="">Quantity to Add*</label>
+              <label for="addQuantity">Quantity to Add*</label>
               <input
                 name="addQuantity"
                 id="addQuantity"
@@ -293,7 +293,7 @@
                 <option value="">Increamental</option>
                 <option value="">Low rate</option>
               </select>
-              <label for="">Notes</label>
+              <label for="test">Notes</label>
               <textarea
                 name="note"
                 class="input"
@@ -345,7 +345,7 @@
                 class="input"
               />
 
-              <label for="">Quantity to Use*</label>
+              <label for="useQuantity">Quantity to Use*</label>
               <input
                 name="useQuantity"
                 id="useQuantity"
@@ -373,12 +373,13 @@
                 <option value="">Donate</option>
                 <option value="">Other</option>
               </select>
-              <label for="">Notes (optional)</label>
+              <label for="test">Notes*</label>
               <textarea
                 name="note"
                 class="input"
                 id="test"
                 placeholder="Additional notes about this addition"
+                required
               ></textarea>
               <div class="form-buttons">
                 <button

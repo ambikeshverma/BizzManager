@@ -95,7 +95,7 @@
             </div>
 
             <form action="/add-expenditure" method="post" id="addProductForm">
-              <label for="">Amount*</label>
+              <label for="amount">Amount*</label>
               <input
                 name="amount"
                 type="number"
@@ -104,21 +104,22 @@
                 placeholder="Enter amount"
                 required
               />
-              <label for="">Date*</label>
+              <label for="date">Date*</label>
               <input
                 type="datetime-local"
                 name="lastUpdate"
                 class="input"
                 id="date"
+                required
               />
-              <label for="">Category*</label>
+              <label for="categoryInput">Category*</label>
               <select name="category" class="input" id="categoryInput" required>
                 <option value="">-- category --</option>
                 <option value="Fooding">Fooding</option>
                 <option value="Home expenses">Home expenses</option>
                 <option value="Desiel">Desiel</option>
               </select>
-              <label for="">Resposible Person*</label>
+              <label for="personName">Resposible Person*</label>
               <input
                 name="ResPerson"
                 type="text"
@@ -126,11 +127,11 @@
                 id="personName"
                 required
               />
-              <label for="">Description</label>
+              <label for="personName">Description</label>
               <input
                 type="text"
                 name="description"
-                id="description"
+                id="personName"
                 class="input"
               />
               <div class="form-buttons">

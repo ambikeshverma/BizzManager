@@ -116,10 +116,10 @@
                 required
               />
               <label for="">Total Paid</label>
-              <input type="number" name="amount" class="input" />
+              <input type="number" name="amount" class="input" required/>
 
               <label for="">Balance</label>
-              <input type="number" name="balance" class="input" />
+              <input type="number" name="balance" class="input" required/>
 
               <div class="form-buttons">
                 <button
@@ -158,8 +158,9 @@
                 </span>
                 <span class="installation">
                   <div class="boxheading">Paid</div>
-                  <div class="today"><%=team.amount%></div>
-                  <p>+<%=team.balance%></p>
+                  <div class="today">₹ <%=team.amount%></div>
+                  <div class="boxheading">Balance</div>
+                  <p>₹ <%=team.balance%></p>
                 </span>
               </div>
             </a>
@@ -227,7 +228,7 @@
                 class="input"
               />
 
-              <label for="">Amount*</label>
+              <label for="addPayment">Amount*</label>
               <input
                 name="addPayment"
                 id="addPayment"
@@ -237,7 +238,7 @@
                 required
               />
 
-               <label for="">Date*</label>
+               <label for="dateP">Date*</label>
               <input
                 name="dateP"
                 id="dateP"
@@ -247,7 +248,7 @@
                 required
               />
 
-              <label for="">Reference</label>
+              <label for="reference">Reference</label>
               <input
                 name="reference"
                 id="reference"
@@ -327,7 +328,7 @@
               />
 
               <label for="brand" id="brand">Brand</label>
-              <select name="brand" id="brand" class="input">
+              <select name="brand" id="brand" class="input" required>
                 <option value="">---brand---</option>
                 <option value="Tata">TATA</option>
                 <option value="Luminous">Luminous</option>
@@ -341,6 +342,7 @@
                 type="text"
                 class="input"
                 placeholder="Enter Address"
+                required
               />
 
               <label for="">Reference</label>
@@ -350,6 +352,7 @@
                 type="text"
                 class="input"
                 placeholder="Type any message..."
+                required
               />
 
               <div class="form-buttons">
