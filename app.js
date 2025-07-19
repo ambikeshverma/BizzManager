@@ -639,7 +639,7 @@ app.post("/login", async (req, res) => {
 
   const token = jwt.sign(
     { id:user._id, role: user.role,name:user.name },
-    "Ambikesh@1234",
+    process.env.JWT_SECRET,
     { expiresIn: "1d" }
   );
   res.cookie("token", token);
@@ -655,7 +655,8 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/registration",(req,res)=>{
-  res.send("Something Went wrong")
+  res.render("Registration")
+  //res.send("Something Went wrong")
 });
 
 app.post("/register", async (req, res) => {
