@@ -655,8 +655,8 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/registration",(req,res)=>{
-  res.render("Registration")
-  //res.send("Something Went wrong")
+  //res.render("Registration")
+  res.send("Something Went wrong")
 });
 
 app.post("/register", async (req, res) => {
