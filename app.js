@@ -19,13 +19,12 @@ const installationModel =require("./model/installation-hist");
 
 const webpush = require('web-push');
 
-const publicVapidKey = 'BBULwummH3X4WEhdMrEOoV4sxo0ew75IDNO4MYX2UOSDjqr6pToLNoZ-avme5F0Aq6lhrNnSzEqeZE5pTotc8bA';
-const privateVapidKey = 'UL_bwXfi3UwdzPF8DhMeYBVcWtYynEFPg1Q6cS6Gu3Y';
+
 
 webpush.setVapidDetails(
   'mailto:your@email.com',
-  publicVapidKey,
-  privateVapidKey
+ process.env.VAPID_PUBLIC_KEY,
+  process.env.VAPID_PRIVATE_KEY
 );
 
 connectDB();

@@ -93,7 +93,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
     async function subscribeUser(register) {
       const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array("BBULwummH3X4WEhdMrEOoV4sxo0ew75IDNO4MYX2UOSDjqr6pToLNoZ-avme5F0Aq6lhrNnSzEqeZE5pTotc8bA")
+        applicationServerKey: urlBase64ToUint8Array("BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw")
       });
 
       console.log("📦 Subscription object:", subscription);
