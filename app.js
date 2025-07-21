@@ -754,18 +754,19 @@ app.post("/register", async (req, res) => {
 });
 
 
-app.post('/subscribe', async (req, res) => {
+app.post("/subscribe", async (req, res) => {
   const subscription = req.body;
 
-  // Check if subscription already exists
-  const exists = await Subscription.findOne({ endpoint: subscription.endpoint });
-  if (!exists) {
+  const existing = await Subscription.findOne({ endpoint: subscription.endpoint });
+  if (!existing) {
     await Subscription.create(subscription);
+  } else {
+    await Subscription.updateOne({ endpoint: subscription.endpoint }, subscription);
   }
 
-  res.status(201).json({});
-  console.log('Subscription saved to database.');
+  res.status(201).json({ message: "Subscription saved" });
 });
+
 
 
 const PORT = process.env.PORT || 3000;

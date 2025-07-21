@@ -85,55 +85,53 @@
             
         </div>
     </div>
-   <script>
+ 
+
+<script>
 if ('serviceWorker' in navigator && 'PushManager' in window) {
-  navigator.serviceWorker.register('/sw.js').then(async function (register) {
-    console.log('✅ Service Worker registered.');
+  const VAPID_PUBLIC_KEY = "BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw";
 
-    const newVapidKey = "BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw";
+  navigator.serviceWorker.register('/sw.js').then(async (register) => {
+    console.log('✅ Service Worker registered');
 
-    const existingSubscription = await register.pushManager.getSubscription();
+    // Wait for ready
+    const reg = await navigator.serviceWorker.ready;
+    const existing = await reg.pushManager.getSubscription();
 
-    // If notifications are allowed
     if (Notification.permission === "granted") {
-      if (!existingSubscription) {
-        console.log("ℹ️ No subscription found. Subscribing...");
-        await subscribeUser(register);
+      if (!existing) {
+        console.log("🔁 No existing subscription. Subscribing new...");
+        await subscribeUser(reg);
       } else {
-        // Attempt to send a test request to verify it's not expired (optional)
-        console.log("🔁 Replacing old subscription...");
-        await existingSubscription.unsubscribe();
-        await subscribeUser(register);
+        console.log("📌 Existing subscription found. No duplicate created.");
       }
     } else if (Notification.permission === "default") {
       const permission = await Notification.requestPermission();
       if (permission === "granted") {
-        await subscribeUser(register);
+        await subscribeUser(reg);
       } else {
         console.log("❌ Notification permission denied.");
       }
     } else {
-      console.log("🚫 Permission previously denied.");
+      console.log("🚫 Notification blocked. Ask user to enable it manually.");
     }
 
-    async function subscribeUser(register) {
+    async function subscribeUser(reg) {
       try {
-        const subscription = await register.pushManager.subscribe({
+        const sub = await reg.pushManager.subscribe({
           userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(newVapidKey)
+          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
         });
-
-        console.log("📦 New subscription:", subscription);
 
         await fetch("/subscribe", {
           method: "POST",
-          body: JSON.stringify(subscription),
+          body: JSON.stringify(sub),
           headers: { "Content-Type": "application/json" }
         });
 
         console.log("✅ Subscription sent to backend");
-      } catch (err) {
-        console.error("❌ Subscription failed:", err);
+      } catch (error) {
+        console.error("❌ Subscription failed:", error);
       }
     }
 
