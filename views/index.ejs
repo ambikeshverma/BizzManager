@@ -87,52 +87,46 @@
     </div>
  
 
-<script>
+    <script>
 if ('serviceWorker' in navigator && 'PushManager' in window) {
   navigator.serviceWorker.register('/sw.js').then(async function (register) {
     console.log('✅ Service Worker registered.');
 
-    const newVapidKey = "BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw";
-
-    // Always check permission first
-    const permission = await Notification.requestPermission();
-    if (permission !== 'granted') {
-      console.log("🚫 Notification permission not granted.");
-      return;
+    if (Notification.permission === "granted") {
+      // Already allowed
+      subscribeUser(register);
+    } else if (Notification.permission === "default") {
+      // Ask user
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        subscribeUser(register);
+      } else {
+        console.log("❌ Notification permission denied.");
+      }
+    } else {
+      console.log("🚫 Permission previously denied.");
     }
 
-    // Check existing subscription
-    const existingSubscription = await register.pushManager.getSubscription();
-
-    // Unsubscribe and resubscribe if already exists (safe refresh logic)
-    if (existingSubscription) {
-      await existingSubscription.unsubscribe();
-      console.log("🗑️ Old subscription unsubscribed.");
-    }
-
-    try {
-      const newSubscription = await register.pushManager.subscribe({
+    async function subscribeUser(register) {
+      const subscription = await register.pushManager.subscribe({
         userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(newVapidKey)
+        applicationServerKey: urlBase64ToUint8Array("BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw")
       });
 
-      console.log("📦 New subscription created:", newSubscription);
+      console.log("📦 Subscription object:", subscription);
 
-      // Send subscription to your backend
       await fetch("/subscribe", {
         method: "POST",
-        body: JSON.stringify(newSubscription),
+        body: JSON.stringify(subscription),
         headers: { "Content-Type": "application/json" }
       });
 
-      console.log("✅ New subscription sent to backend.");
-    } catch (err) {
-      console.error("❌ Subscription failed:", err);
+      console.log("✅ Subscription sent to backend");
     }
 
     function urlBase64ToUint8Array(base64String) {
-      const padding = "=".repeat((4 - base64String.length % 4) % 4);
-      const base64 = (base64String + padding).replace(/\-/g, "+").replace(/_/g, "/");
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding).replace(/\-/g, '+').replace(/_/g, '/');
       const rawData = window.atob(base64);
       const outputArray = new Uint8Array(rawData.length);
       for (let i = 0; i < rawData.length; ++i) {
@@ -143,6 +137,7 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
   });
 }
 </script>
+
 
 
 
