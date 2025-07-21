@@ -473,15 +473,15 @@ app.get("/income",authenticate, async (req, res) => {
     body: `Income feature added by Ambikesh Verma Succesfully checkOut for use`
   });
    const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
+  subscriptions.forEach( async sub => {
    webpush.sendNotification(sub, payload)
   .then(response => {
     console.log("Notification sent successfully");
   })
-  .catch(err => {
+  .catch(async err => {
     if (err.statusCode === 410 || err.statusCode === 404) {
       console.log("Subscription is expired or no longer valid. Removing...");
-
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
       // remove subscription from DB using subscription.endpoint
     } else {
       console.error("Push error:", err);
