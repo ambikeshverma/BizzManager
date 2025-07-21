@@ -18,8 +18,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 
 
-    <title>Expenditure</title>
-    <link rel="stylesheet" href="/style/expenditure.css" />
+    <title>Income</title>
+    <link rel="stylesheet" href="/style/income.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -34,7 +34,7 @@
         <img src="/images/logo.jpg" height="50px" alt="" />
         <span>BizManager</span>
       </div>
-      <div class="heading">Expenditure Management</div>
+      <div class="heading">Income Management</div>
       <div class="bell">
         <img src="/images/Notification.png" alt="" />
         <span><%=user.name%></span>
@@ -92,13 +92,13 @@
       <div class="container">
         <div class="heading1">
           <div class="formobile">
-          <div class="h1">Expenditure Management</div>
-          <div class="overview">Track and manage business expenses</div>
+          <div class="h1">Income Management</div>
+          <div class="overview">Track and manage your business income</div>
           </div>
           <div class="buttonMobile">
             <button class="add-product" id="addProduct">
               <span>+</span>
-              <span>Add Expenditure</span>
+              <span>Add Income</span>
             </button>
           </div>
         </div>
@@ -106,10 +106,10 @@
           <div class="modal">
             <div class="form-heading">
               <img src="/images/receipt.png" height="30px" alt="" />
-              <h2>Add Expenditure</h2>
+              <h2>Add Income</h2>
             </div>
 
-            <form action="/add-expenditure" method="post" id="addProductForm">
+            <form action="/add-income" method="post" id="addProductForm">
               <label for="amount">Amount*</label>
               <input
                 name="amount"
@@ -127,26 +127,19 @@
                 id="date"
                 required
               />
-              <label for="categoryInput">Category*</label>
-              <select name="category" class="input" id="categoryInput" required>
-                <option value="">-- category --</option>
-                <option value="Fooding">Fooding</option>
-                <option value="Home expenses">Home expenses</option>
-                <option value="Desiel">Desiel</option>
+              <label for="categoryInput">Payment Type*</label>
+              <select name="paymentType" class="input" id="categoryInput" required>
+                <option value="">-- select --</option>
+                <option value="Account Pay">Account pay</option>
+                <option value="Through Cash">Through Cash</option>
+                <option value="Other">Other</option>
               </select>
-              <label for="personName">Resposible Person*</label>
-              <input
-                name="ResPerson"
-                type="text"
-                class="input"
-                id="personName"
-                required
-              />
-              <label for="personName">Description</label>
+             
+              <label for="reamrk">Remark*</label>
               <input
                 type="text"
-                name="description"
-                id="personName"
+                name="remark"
+                id="remark"
                 class="input"
               />
               <div class="form-buttons">
@@ -158,42 +151,13 @@
                   Cancel
                 </button>
                 <button type="submit" id="sub" class="form-submit-button">
-                  Add Expenses
+                  Add Income
                 </button>
               </div>
             </form>
           </div>
         </div>
 
-        <div class="showExpenses">
-          <div class="imageBox">
-            <span>
-              <img src="/images/calender1.png" alt="" />
-            </span>
-            <span>
-              <div class="boxheading">Today's Expenses</div>
-              <div class="today"><%=todayTotal%></div>
-            </span>
-          </div>
-          <div class="imageBox">
-            <span>
-              <img src="/images/calendar2.png" alt="" />
-            </span>
-            <span>
-              <div class="boxheading">Weekly Expenses</div>
-              <div class="today"><%=weekTotal%></div>
-            </span>
-          </div>
-          <div class="imageBox">
-            <span>
-              <img src="/images/calendar3.png" alt="" />
-            </span>
-            <span>
-              <div class="boxheading">Yearly Expenses</div>
-              <div class="today"><%=yearTotal%></div>
-            </span>
-          </div>
-        </div>
 
         <div style="height: 675px; margin-top: 40px; overflow: hidden">
           <form class="filterform" method="GET" action="/expenditure">
@@ -210,27 +174,25 @@
                 <tr>
                   <th>SR No.</th>
                   <th>DATE</th>
-                  <th>DESCRIPTION</th>
                   <th>AMOUNT</th>
-                  <th>RESPONSIBLE PERSON</th>
-                  <th>CATEGORY</th>
+                  <th>REMARK</th>
+                  <th>PAYMENT TYPE</th>
                   <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>
-                <% expenses.forEach((expense,index) =>{%>
+                <% incomes.forEach((income,index) =>{%>
                 <tr>
                   <td><%=index+1%>.</td>
-                  <td><%=expense.lastUpdate%></td>
-                  <td><%=expense.description%></td>
-                  <td><%=expense.amount%></td>
-                  <td><%=expense.ResPerson%></td>
-                  <td><%=expense.category%></td>
+                  <td><%=income.lastUpdate%></td>
+                  <td><%=income.amount%></td>
+                  <td><%=income.remark%></td>
+                  <td><%=income.paymentType%></td>
                   <td>
                     <form
-                      action="/deleteExpense/<%=expense._id%>"
+                      action="/deleteincome/<%=income._id%>"
                       method="post"
-                      onsubmit="return confirm('Are you sure! You want to delete <%=expense.amount%>?');"
+                      onsubmit="return confirm('Are you sure! You want to delete <%=income.amount%>?');"
                     >
                       <button type="submit" class="delete-row">
                         <img src="/images/delete.png" alt="Delete" />
@@ -278,6 +240,6 @@
         </div>
       </div>
     </main>
-    <script src="/javascript/expenditure.js"></script>
+    <script src="/javascript/income.js"></script>
   </body>
 </html>

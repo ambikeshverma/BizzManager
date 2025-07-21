@@ -15,6 +15,8 @@ const Subscription = require('./model/Subscription');
 const teamModel =require("./model/team")
 const paymentModel =require("./model/payment")
 const installationModel =require("./model/installation-hist");
+const incomeModel =require("./model/income");
+
 
 
 const webpush = require('web-push');
@@ -411,6 +413,88 @@ app.get("/expenditure",authenticate, async (req, res) => {
     res.status(500).send("Error deleting product");
   }
 });
+
+
+app.get("/income",authenticate, async (req, res) => {
+  try {
+   // const createdexpenses = await expenModel.find().sort({ lastUpdate: -1 });
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = 10;
+  const skip = (page - 1) * limit;
+
+  const startDate = req.query.start ? new Date(req.query.start) : null;
+  const endDate = req.query.end ? new Date(req.query.end) : null;
+
+  const query = {};
+
+  // Only apply date filter if user submitted it
+  if (startDate && endDate) {
+    query.lastUpdate = { $gte: startDate, $lte: endDate };
+  }
+
+
+    const total = await incomeModel.countDocuments(query);
+    const createdincome = await incomeModel.find(query)
+      .sort({ lastUpdate: -1 }) // show most recent first
+      .skip(skip)
+      .limit(limit);
+
+    res.render("income", {
+      incomes:createdincome,
+      user:req.user,
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      startDate: req.query.start || '',
+      endDate: req.query.end || ''
+    });
+  } catch (error) {
+    console.error("Error loading expenditures:", error);
+    res.status(500).send("Something went wrong");
+  }
+});
+
+
+ app.post("/add-income",authenticate, async function(req,res){
+    let {amount,lastUpdate,paymentType,remark}=req.body;
+
+    let it= await incomeModel.create({
+    amount,
+    lastUpdate,
+    remark,
+    paymentType
+   })
+
+   ///////////////
+    const payload = JSON.stringify({
+    // title: `New ₹${amount} Income added `,
+    // body: `Amount of ₹${amount} are added in income on ${lastUpdate}...other details: ${remark} `
+    title: `Income Feature added Succesfully`,
+    body: `Income feature added by Ambikesh Verma Succesfully checkOut for use`
+  });
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach(sub => {
+    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  });
+  ///////////////
+  
+   
+    res.redirect("/income");
+
+ });
+
+
+  app.post("/deleteincome/:id",authenticate,authorizeAdmin, async (req, res) => {
+  const incomeId = req.params.id;
+
+  try {
+    await incomeModel.findByIdAndDelete(incomeId);
+    res.redirect("/income"); // Refresh the page with updated data
+  } catch (err) {
+    res.status(500).send("Error deleting product");
+  }
+});
+
 
 
 app.get("/labour",authenticate,async function(req,res){
