@@ -89,50 +89,39 @@
 
 <script>
 if ('serviceWorker' in navigator && 'PushManager' in window) {
-  const VAPID_PUBLIC_KEY = "BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw";
-
-  navigator.serviceWorker.register('/sw.js').then(async (register) => {
-    console.log('✅ Service Worker registered');
-
-    // Wait for ready
-    const reg = await navigator.serviceWorker.ready;
-    const existing = await reg.pushManager.getSubscription();
+  navigator.serviceWorker.register('/sw.js').then(async function (register) {
+    console.log('✅ Service Worker registered.');
 
     if (Notification.permission === "granted") {
-      if (!existing) {
-        console.log("🔁 No existing subscription. Subscribing new...");
-        await subscribeUser(reg);
-      } else {
-        console.log("📌 Existing subscription found. No duplicate created.");
-      }
+      // Already allowed
+      subscribeUser(register);
     } else if (Notification.permission === "default") {
+      // Ask user
       const permission = await Notification.requestPermission();
       if (permission === "granted") {
-        await subscribeUser(reg);
+        subscribeUser(register);
       } else {
         console.log("❌ Notification permission denied.");
       }
     } else {
-      console.log("🚫 Notification blocked. Ask user to enable it manually.");
+      console.log("🚫 Permission previously denied.");
     }
 
-    async function subscribeUser(reg) {
-      try {
-        const sub = await reg.pushManager.subscribe({
-          userVisibleOnly: true,
-          applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
-        });
+    async function subscribeUser(register) {
+      const subscription = await register.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array("BH8Am4taHfPDONGhl8kh5cQ1AmNYRVL-D-aWiIMdMJbBWyg6IYTtsERyL4mToEIvOvwW60GwFl2ftcOFQVgqtYw")
+      });
 
-        await fetch("/subscribe", {
-          method: "POST",
-          body: JSON.stringify(sub),
-          headers: { "Content-Type": "application/json" }
-        });
+      console.log("📦 Subscription object:", subscription);
 
-        console.log("✅ Subscription sent to backend");
-      } catch (error) {
-        console.error("❌ Subscription failed:", error);
-      }
+      await fetch("/subscribe", {
+        method: "POST",
+        body: JSON.stringify(subscription),
+        headers: { "Content-Type": "application/json" }
+      });
+
+      console.log("✅ Subscription sent to backend");
     }
 
     function urlBase64ToUint8Array(base64String) {

@@ -474,7 +474,19 @@ app.get("/income",authenticate, async (req, res) => {
   });
    const subscriptions = await Subscription.find();
   subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
   
@@ -754,17 +766,17 @@ app.post("/register", async (req, res) => {
 });
 
 
-app.post("/subscribe", async (req, res) => {
+app.post('/subscribe', async (req, res) => {
   const subscription = req.body;
 
-  const existing = await Subscription.findOne({ endpoint: subscription.endpoint });
-  if (!existing) {
+  // Check if subscription already exists
+  const exists = await Subscription.findOne({ endpoint: subscription.endpoint });
+  if (!exists) {
     await Subscription.create(subscription);
-  } else {
-    await Subscription.updateOne({ endpoint: subscription.endpoint }, subscription);
   }
 
-  res.status(201).json({ message: "Subscription saved" });
+  res.status(201).json({});
+  console.log('Subscription saved to database.');
 });
 
 
