@@ -77,8 +77,20 @@ app.post("/create",authenticate, async function(req,res){
     body: `Product "${pname}" was added, with stock of ${CurrentStock} supplied by ${Sname}`
   });
   const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
     res.redirect("/inventory")
@@ -141,9 +153,21 @@ app.post("/add-stock/update",authenticate, async (req, res) => {
     body: `On ${addD} amount of ${aq} stocks are added to ${pn} now current stocks in ${pn} are ${cs} and other details: ${nt}`
   });
    
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   /////////
   res.redirect("/inventory");
@@ -236,9 +260,21 @@ const payload = JSON.stringify({
     title: `${uq} stocks are used from ${pn} `,
     body: ` Amount of ${uq} are used on ${dt} from ${pn} additional notes are: ${nte} `
   });
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
 //////////
 
@@ -392,9 +428,21 @@ app.get("/expenditure",authenticate, async (req, res) => {
     title: `New ₹${amount} Expense added `,
     body: `Amount of ₹${amount} are spent for ${category} on ${lastUpdate} ,responsible person ${ResPerson}...other details: ${description} `
   });
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
    
@@ -467,10 +515,8 @@ app.get("/income",authenticate, async (req, res) => {
 
    ///////////////
     const payload = JSON.stringify({
-    // title: `New ₹${amount} Income added `,
-    // body: `Amount of ₹${amount} are added in income on ${lastUpdate}...other details: ${remark} `
-    title: `Income Feature added Succesfully`,
-    body: `Income feature added by Ambikesh Verma Succesfully checkOut for use`
+     title: `New ₹${amount} Income added `,
+     body: `Amount of ₹${amount} are added in income on ${lastUpdate}...other details: ${remark} `
   });
    const subscriptions = await Subscription.find();
   subscriptions.forEach( async sub => {
@@ -532,9 +578,21 @@ app.post("/add-team",authenticate, async function(req,res){
     title: `New team added ${teamName}`,
     body: `${teamName} have ${totalInstallation} total installation and total amount of ₹${amount} already paid Symtrack`
   });
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
    
@@ -555,8 +613,20 @@ app.post("/add-team",authenticate, async function(req,res){
     body: `Team was deleted.`
   });
   const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
 ////////////
 
@@ -589,8 +659,20 @@ app.post("/add-team",authenticate, async function(req,res){
     body: `Amount of ₹${addPayment} are paid to ${teamName} on ${dateP} Reference: ${reference}`
   });
   const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
 
@@ -664,9 +746,21 @@ app.post("/add-installation",authenticate, async function(req,res){
     title: `${installationNum} new installation added to ${teamName}`,
     body: `${brand} setup added by team ${teamName} at ${address} at ${dateI} on rate of ${rate} reference: ${reference}`
   });
-  const subscriptions = await Subscription.find();
-  subscriptions.forEach(sub => {
-    webpush.sendNotification(sub, payload).catch(err => console.error(err));
+   const subscriptions = await Subscription.find();
+  subscriptions.forEach( async sub => {
+   webpush.sendNotification(sub, payload)
+  .then(response => {
+    console.log("Notification sent successfully");
+  })
+  .catch(async err => {
+    if (err.statusCode === 410 || err.statusCode === 404) {
+      console.log("Subscription is expired or no longer valid. Removing...");
+       await Subscription.deleteOne({ endpoint: sub.endpoint });
+      // remove subscription from DB using subscription.endpoint
+    } else {
+      console.error("Push error:", err);
+    }
+  });
   });
   ///////////////
    
@@ -750,8 +844,8 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/registration",(req,res)=>{
-  //res.render("Registration")
-  res.send("Something Went wrong")
+  res.render("Registration")
+  //res.send("Something Went wrong")
 });
 
 app.post("/register", async (req, res) => {
