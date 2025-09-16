@@ -844,8 +844,8 @@ app.get("/logout", (req, res) => {
 
 
 app.get("/registration",(req,res)=>{
-  res.render("Registration");
-  // res.render("closedRegis")
+  // res.render("Registration");
+  res.render("closedRegis")
 });
 
 app.post("/register", async (req, res) => {
